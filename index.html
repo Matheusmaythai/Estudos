@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyUp — Meus Estudos</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #0b0f16;
+    --card: #121925;
+    --card2: #182131;
+    --text: #f4f7fb;
+    --muted: #8f9bad;
+    --accent: #6c63ff;
+    --accent2: #8b84ff;
+    --green: #38d39f;
+    --red: #ff5d6c;
+    --border: #263144;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: 0;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 245px;
+    background: #0e141e;
+    border-right: 1px solid var(--border);
+    padding: 22px 14px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    padding: 4px 12px 25px;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.nav button {
+    display: block;
+    width: 100%;
+    padding: 13px 14px;
+    margin: 5px 0;
+    background: transparent;
+    color: var(--muted);
+    text-align: left;
+    border-radius: 10px;
+}
+
+.nav button:hover,
+.nav button.active {
+    background: var(--card2);
+    color: #fff;
+}
+
+.main {
+    margin-left: 245px;
+    width: calc(100% - 245px);
+    padding: 28px;
+    max-width: 1400px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-top: 7px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.stat {
+    font-size: 28px;
+    font-weight: 800;
+    margin-top: 7px;
+}
+
+.label {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.icon {
+    font-size: 21px;
+}
+
+.two {
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap: 18px;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.section-title h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.primary {
+    background: var(--accent);
+    color: white;
+    padding: 11px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.primary:hover {
+    background: var(--accent2);
+}
+
+.secondary {
+    background: var(--card2);
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+}
+
+.input {
+    width: 100%;
+    background: #0d131d;
+    color: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    outline: none;
+}
+
+.input:focus {
+    border-color: var(--accent);
+}
+
+textarea.input {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+.row > * {
+    flex: 1;
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.task:last-child {
+    border-bottom: 0;
+}
+
+.task input {
+    width: 19px;
+    height: 19px;
+    accent-color: var(--accent);
+}
+
+.task.done .task-name {
+    text-decoration: line-through;
+    color: var(--muted);
+}
+
+.badge {
+    font-size: 11px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    background: #242d3e;
+    color: #bfc7d8;
+    margin-left: auto;
+}
+
+.progress {
+    height: 10px;
+    background: #242d3e;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.progress div {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 20px;
+    transition: .3s;
+}
+
+.subjects {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.subject {
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: #101722;
+}
+
+.subject h3 {
+    margin: 0 0 8px;
+}
+
+.subject p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.danger {
+    color: #ff7c87;
+    background: #321b22;
+}
+
+.timer {
+    text-align: center;
+    padding: 20px;
+}
+
+.time {
+    font-size: 65px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin: 15px 0;
+}
+
+.timer select {
+    max-width: 230px;
+}
+
+.xpbar {
+    height: 12px;
+    background: #242d3e;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 8px 0 16px;
+}
+
+.xpbar div {
+    height: 100%;
+    background: var(--green);
+    transition: .3s;
+}
+
+.notes-list {
+    display: grid;
+    gap: 12px;
+}
+
+.note {
+    border: 1px solid var(--border);
+    background: #101722;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.note small {
+    color: var(--muted);
+}
+
+.empty {
+    color: var(--muted);
+    padding: 20px;
+    text-align: center;
+}
+
+.toast {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #fff;
+    color: #111;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    display: none;
+    z-index: 10;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: #0009;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 5;
+}
+
+.modal-box {
+    width: min(520px, 100%);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.close {
+    float: right;
+    background: none;
+    color: #aaa;
+    font-size: 22px;
+}
+
+@media (max-width: 900px) {
+    .sidebar {
+        width: 72px;
+        padding: 14px 8px;
+    }
+
+    .logo {
+        font-size: 0;
+        text-align: center;
+    }
+
+    .logo span {
+        font-size: 24px;
+    }
+
+    .nav button {
+        font-size: 0;
+        text-align: center;
+    }
+
+    .nav button::first-letter {
+        font-size: 20px;
+    }
+
+    .main {
+        margin-left: 72px;
+        width: calc(100% - 72px);
+        padding: 18px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .two {
+        grid-template-columns: 1fr;
+    }
+
+    .subjects {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .grid,
+    .subjects {
+        grid-template-columns: 1fr;
+    }
+
+    .top {
+        align-items: flex-start;
+    }
+
+    .time {
+        font-size: 48px;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+<div class="logo">
+    Study<span>Up</span>
+</div>
+
+<nav class="nav">
+
+<button class="active" onclick="showPage('home',this)">
+🏠 Início
+</button>
+
+<button onclick="showPage('tasks',this)">
+✅ Tarefas
+</button>
+
+<button onclick="showPage('subjects',this)">
+📚 Matérias
+</button>
+
+<button onclick="showPage('timer',this)">
+⏱️ Cronômetro
+</button>
+
+<button onclick="showPage('notes',this)">
+📝 Anotações
+</button>
+
+<button onclick="showPage('progress',this)">
+📊 Progresso
+</button>
+
+</nav>
+
+</aside>
+
+
+<main class="main">
+
+<!-- INÍCIO -->
+
+<section id="home" class="page active">
+
+<div class="top">
+
+<div>
+<h1>Olá! 👋</h1>
+<div class="subtitle">
+Hora de estudar e evoluir.
+</div>
+</div>
+
+<button class="primary" onclick="openTask()">
++ Nova tarefa
+</button>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+<div class="icon">🔥</div>
+<div class="stat" id="streak">0</div>
+<div class="label">dias de sequência</div>
+</div>
+
+<div class="card">
+<div class="icon">⭐</div>
+<div class="stat" id="xp">0 XP</div>
+<div class="label">experiência total</div>
+</div>
+
+<div class="card">
+<div class="icon">✅</div>
+<div class="stat" id="done">0</div>
+<div class="label">tarefas concluídas</div>
+</div>
+
+<div class="card">
+<div class="icon">⏱️</div>
+<div class="stat" id="minutes">0 min</div>
+<div class="label">tempo estudado</div>
+</div>
+
+</div>
+
+
+<div class="two">
+
+<div class="card">
+
+<div class="section-title">
+
+<h2>Tarefas de hoje</h2>
+
+<button class="secondary"
+onclick="showPage('tasks',document.querySelectorAll('.nav button')[1])">
+Ver todas
+</button>
+
+</div>
+
+<div id="homeTasks"></div>
+
+</div>
+
+
+<div class="card">
+
+<div class="section-title">
+<h2>Seu nível</h2>
+</div>
+
+<div style="font-size:26px;font-weight:800" id="level">
+Nível 1
+</div>
+
+<div class="label" id="nextXP">
+100 XP para o próximo nível
+</div>
+
+<div class="xpbar">
+<div id="xpFill"></div>
+</div>
+
+<div class="label">
+Continue estudando para ganhar XP.
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- TAREFAS -->
+
+<section id="tasks" class="page">
+
+<div class="top">
+
+<div>
+<h1>Tarefas</h1>
+<div class="subtitle">
+Organize o que precisa estudar.
+</div>
+</div>
+
+<button class="primary" onclick="openTask()">
++ Nova tarefa
+</button>
+
+</div>
+
+<div class="card">
+
+<div id="taskList"></div>
+
+</div>
+
+</section>
+
+
+<!-- MATÉRIAS -->
+
+<section id="subjects" class="page">
+
+<div class="top">
+
+<div>
+<h1>Matérias</h1>
+
+<div class="subtitle">
+Escolha uma matéria e mantenha o foco.
+</div>
+
+</div>
+
+</div>
+
+<div class="subjects" id="subjectList"></div>
+
+</section>
+
+
+<!-- CRONÔMETRO -->
+
+<section id="timer" class="page">
+
+<div class="top">
+
+<div>
+<h1>Cronômetro</h1>
+
+<div class="subtitle">
+Estude com foco e registre seu tempo.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card timer">
+
+<select
+class="input"
+id="timerSelect"
+onchange="setTimer()">
+
+<option value="25">
+Pomodoro — 25 min
+</option>
+
+<option value="45">
+Foco — 45 min
+</option>
+
+<option value="60">
+Estudo — 60 min
+</option>
+
+<option value="5">
+Teste — 5 min
+</option>
+
+</select>
+
+
+<div class="time" id="clock">
+25:00
+</div>
+
+
+<div class="actions" style="justify-content:center">
+
+<button
+class="primary"
+id="startBtn"
+onclick="toggleTimer()">
+
+▶ Iniciar
+
+</button>
+
+<button
+class="secondary"
+onclick="resetTimer()">
+
+↺ Reiniciar
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ANOTAÇÕES -->
+
+<section id="notes" class="page">
+
+<div class="top">
+
+<div>
+
+<h1>Anotações</h1>
+
+<div class="subtitle">
+Guarde seus resumos e ideias.
+</div>
+
+</div>
+
+<button class="primary" onclick="saveNote()">
+Salvar anotação
+</button>
+
+</div>
+
+
+<div class="card" style="margin-bottom:18px">
+
+<div class="row">
+
+<input
+id="noteTitle"
+class="input"
+placeholder="Título da anotação">
+
+<select
+id="noteSubject"
+class="input">
+</select>
+
+</div>
+
+
+<textarea
+id="noteText"
+class="input"
+style="margin-top:10px"
+placeholder="Escreva aqui o que você aprendeu...">
+</textarea>
+
+</div>
+
+
+<div class="notes-list" id="notesList"></div>
+
+</section>
+
+
+<!-- PROGRESSO -->
+
+<section id="progress" class="page">
+
+<div class="top">
+
+<div>
+
+<h1>Meu progresso</h1>
+
+<div class="subtitle">
+Veja sua evolução.
+</div>
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<div class="label">
+XP
+</div>
+
+<div class="stat" id="pXP">
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="label">
+Nível
+</div>
+
+<div class="stat" id="pLevel">
+1
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="label">
+Tarefas
+</div>
+
+<div class="stat" id="pDone">
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="label">
+Tempo
+</div>
+
+<div class="stat" id="pMinutes">
+0 min
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+Meta de estudo
+</h2>
+
+<div class="label">
+Meta diária: 60 minutos
+</div>
+
+<div class="progress">
+
+<div id="dailyFill"></div>
+
+</div>
+
+<p id="dailyText" class="label"></p>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+
+<!-- MODAL DE TAREFA -->
+
+<div class="modal" id="taskModal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeTask()">
+×
+</button>
+
+<h2>
+Nova tarefa
+</h2>
+
+
+<input
+id="taskName"
+class="input"
+placeholder="Ex.: Estudar frações">
+
+
+<select
+id="taskSubject"
+class="input"
+style="margin-top:10px">
+</select>
+
+
+<div class="actions">
+
+<button class="primary" onclick="addTask()">
+Adicionar
+</button>
+
+<button class="secondary" onclick="closeTask()">
+Cancelar
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+const defaultSubjects = [
+
+{
+name:"Matemática",
+icon:"➗",
+desc:"Cálculos, problemas e lógica."
+},
+
+{
+name:"Português",
+icon:"📖",
+desc:"Gramática, leitura e redação."
+},
+
+{
+name:"História",
+icon:"🏛️",
+desc:"Eventos, povos e acontecimentos."
+},
+
+{
+name:"Geografia",
+icon:"🌎",
+desc:"Espaço, mapas e sociedade."
+},
+
+{
+name:"Ciências",
+icon:"🔬",
+desc:"Natureza, corpo e universo."
+},
+
+{
+name:"Inglês",
+icon:"🇺🇸",
+desc:"Vocabulário e compreensão."
+}
+
+];
+
+
+let data =
+JSON.parse(localStorage.getItem("studyup"))
+||
+{
+tasks:[],
+notes:[],
+xp:0,
+minutes:0,
+lastDay:null,
+streak:0
+};
+
+
+let timerSec = 1500;
+
+let timerRunning = false;
+
+let timerInt = null;
+
+
+
+function save() {
+
+localStorage.setItem(
+"studyup",
+JSON.stringify(data)
+);
+
+render();
+
+}
+
+
+
+function showPage(id,btn) {
+
+document
+.querySelectorAll(".page")
+.forEach(p => p.classList.remove("active"));
+
+document
+.getElementById(id)
+.classList.add("active");
+
+
+document
+.querySelectorAll(".nav button")
+.forEach(b => b.classList.remove("active"));
+
+if(btn) {
+btn.classList.add("active");
+}
+
+}
+
+
+
+function populateSubjects() {
+
+const opts =
+defaultSubjects
+.map(s => `<option>${s.name}</option>`)
+.join("");
+
+document.getElementById("taskSubject").innerHTML = opts;
+
+document.getElementById("noteSubject").innerHTML = opts;
+
+}
+
+
+
+function openTask() {
+
+document.getElementById("taskModal").style.display = "flex";
+
+document.getElementById("taskName").focus();
+
+}
+
+
+
+function closeTask() {
+
+document.getElementById("taskModal").style.display = "none";
+
+document.getElementById("taskName").value = "";
+
+}
+
+
+
+function addTask() {
+
+const name =
+document.getElementById("taskName").value.trim();
+
+const subject =
+document.getElementById("taskSubject").value;
+
+
+if(!name) {
+
+toast("Digite uma tarefa.");
+
+return;
+
+}
+
+
+data.tasks.push({
+
+id:Date.now(),
+
+name,
+
+subject,
+
+done:false
+
+});
+
+
+data.xp += 5;
+
+closeTask();
+
+save();
+
+toast("Tarefa adicionada! +5 XP");
+
+}
+
+
+
+function toggleTask(id) {
+
+const t =
+data.tasks.find(x => x.id === id);
+
+if(!t) return;
+
+
+t.done = !t.done;
+
+
+if(t.done) {
+
+data.xp += 20;
+
+updateStreak();
+
+toast("Tarefa concluída! +20 XP");
+
+}
+
+else {
+
+data.xp =
+Math.max(0,data.xp - 20);
+
+}
+
+
+save();
+
+}
+
+
+
+function removeTask(id) {
+
+data.tasks =
+data.tasks.filter(x => x.id !== id);
+
+save();
+
+toast("Tarefa removida.");
+
+}
+
+
+
+function taskHTML(t) {
+
+return `
+
+<div class="task ${t.done ? "done" : ""}">
+
+<input
+type="checkbox"
+${t.done ? "checked" : ""}
+onchange="toggleTask(${t.id})">
+
+<span class="task-name">
+${escapeHTML(t.name)}
+</span>
+
+<span class="badge">
+${escapeHTML(t.subject)}
+</span>
+
+<button
+class="secondary danger"
+onclick="removeTask(${t.id})">
+×
+</button>
+
+</div>
+
+`;
+
+}
+
+
+
+function renderTasks() {
+
+const html =
+data.tasks.length
+
+?
+
+data.tasks.map(taskHTML).join("")
+
+:
+
+`<div class="empty">
+Nenhuma tarefa ainda. Crie sua primeira!
+</div>`;
+
+
+document.getElementById("taskList").innerHTML = html;
+
+
+const today =
+data.tasks
+.filter(t => !t.done)
+.slice(0,5);
+
+
+document.getElementById("homeTasks").innerHTML =
+
+today.length
+
+?
+
+today.map(taskHTML).join("")
+
+:
+
+`<div class="empty">
+Tudo limpo por aqui. 🎉
+</div>`;
+
+}
+
+
+
+function updateStreak() {
+
+const today =
+new Date().toISOString().slice(0,10);
+
+
+if(data.lastDay === today)
+return;
+
+
+const yesterday =
+new Date(Date.now() - 86400000)
+.toISOString()
+.slice(0,10);
+
+
+data.streak =
+data.lastDay === yesterday
+
+?
+
+data.streak + 1
+
+:
+
+1;
+
+
+data.lastDay = today;
+
+}
+
+
+
+function saveNote() {
+
+const title =
+document.getElementById("noteTitle")
+.value.trim();
+
+
+const text =
+document.getElementById("noteText")
+.value.trim();
+
+
+const subject =
+document.getElementById("noteSubject")
+.value;
+
+
+if(!title || !text) {
+
+toast("Preencha o título e a anotação.");
+
+return;
+
+}
+
+
+data.notes.unshift({
+
+id:Date.now(),
+
+title,
+
+text,
+
+subject,
+
+date:new Date().toLocaleDateString("pt-BR")
+
+});
+
+
+data.xp += 10;
+
+
+document.getElementById("noteTitle").value = "";
+
+document.getElementById("noteText").value = "";
+
+
+save();
+
+toast("Anotação salva! +10 XP");
+
+}
+
+
+
+function renderNotes() {
+
+document.getElementById("notesList").innerHTML =
+
+data.notes.length
+
+?
+
+data.notes.map(n => `
+
+<div class="note">
+
+<div
+style="display:flex;justify-content:space-between;gap:10px">
+
+<strong>
+${escapeHTML(n.title)}
+</strong>
+
+<span class="badge">
+${escapeHTML(n.subject)}
+</span>
+
+</div>
+
+<small>
+${n.date}
+</small>
+
+<p>
+${escapeHTML(n.text)
+.replace(/\n/g,"<br>")}
+</p>
+
+<button
+class="secondary danger"
+onclick="removeNote(${n.id})">
+
+Excluir
+
+</button>
+
+</div>
+
+`).join("")
+
+:
+
+`<div class="card empty">
+Nenhuma anotação salva.
+</div>`;
+
+}
+
+
+
+function removeNote(id) {
+
+data.notes =
+data.notes.filter(n => n.id !== id);
+
+save();
+
+}
+
+
+
+function renderSubjects() {
+
+document.getElementById("subjectList").innerHTML =
+
+defaultSubjects.map(s => {
+
+const total =
+data.tasks.filter(
+t => t.subject === s.name
+).length;
+
+
+const done =
+data.tasks.filter(
+t => t.subject === s.name && t.done
+).length;
+
+
+const pct =
+total
+?
+Math.round(done / total * 100)
+:
+0;
+
+
+return `
+
+<div class="subject">
+
+<h3>
+${s.icon} ${s.name}
+</h3>
+
+<p>
+${s.desc}
+</p>
+
+<div class="progress">
+
+<div style="width:${pct}%"></div>
+
+</div>
+
+<p style="margin-top:8px">
+
+${done}/${total}
+tarefas concluídas
+
+</p>
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+
+
+function render() {
+
+const done =
+data.tasks.filter(t => t.done).length;
+
+
+const level =
+Math.floor(data.xp / 100) + 1;
+
+
+const within =
+data.xp % 100;
+
+
+document.getElementById("streak").textContent =
+data.streak;
+
+
+document.getElementById("xp").textContent =
+data.xp + " XP";
+
+
+document.getElementById("done").textContent =
+done;
+
+
+document.getElementById("minutes").textContent =
+data.minutes + " min";
+
+
+document.getElementById("level").textContent =
+"Nível " + level;
+
+
+document.getElementById("nextXP").textContent =
+(100 - within) +
+" XP para o próximo nível";
+
+
+document.getElementById("xpFill").style.width =
+within + "%";
+
+
+document.getElementById("pXP").textContent =
+data.xp;
+
+
+document.getElementById("pLevel").textContent =
+level;
+
+
+document.getElementById("pDone").textContent =
+done;
+
+
+document.getElementById("pMinutes").textContent =
+data.minutes + " min";
+
+
+const pct =
+Math.min(
+100,
+(data.minutes % 60) / 60 * 100
+);
+
+
+document.getElementById("dailyFill").style.width =
+pct + "%";
+
+
+document.getElementById("dailyText").textContent =
+(data.minutes % 60) +
+" de 60 minutos registrados nesta sessão de dados.";
+
+
+renderTasks();
+
+renderNotes();
+
+renderSubjects();
+
+}
+
+
+
+function setTimer() {
+
+resetTimer();
+
+timerSec =
++document.getElementById("timerSelect").value * 60;
+
+updateClock();
+
+}
+
+
+
+function updateClock() {
+
+let m =
+Math.floor(timerSec / 60);
+
+let s =
+timerSec % 60;
+
+
+document.getElementById("clock").textContent =
+
+String(m).padStart(2,"0")
++
+":"
++
+String(s).padStart(2,"0");
+
+}
+
+
+
+function toggleTimer() {
+
+if(timerRunning) {
+
+clearInterval(timerInt);
+
+timerRunning = false;
+
+document.getElementById("startBtn").textContent =
+"▶ Continuar";
+
+return;
+
+}
+
+
+timerRunning = true;
+
+document.getElementById("startBtn").textContent =
+"⏸ Pausar";
+
+
+timerInt =
+setInterval(() => {
+
+timerSec--;
+
+updateClock();
+
+
+if(timerSec <= 0) {
+
+clearInterval(timerInt);
+
+timerRunning = false;
+
+
+data.minutes +=
++document.getElementById("timerSelect").value;
+
+
+data.xp += 30;
+
+updateStreak();
+
+save();
+
+toast("Sessão concluída! +30 XP");
+
+setTimer();
+
+}
+
+},1000);
+
+}
+
+
+
+function resetTimer() {
+
+clearInterval(timerInt);
+
+timerRunning = false;
+
+document.getElementById("startBtn").textContent =
+"▶ Iniciar";
+
+
+timerSec =
++document.getElementById("timerSelect").value * 60;
+
+updateClock();
+
+}
+
+
+
+function toast(msg) {
+
+const t =
+document.getElementById("toast");
+
+
+t.textContent = msg;
+
+t.style.display = "block";
+
+
+setTimeout(() => {
+
+t.style.display = "none";
+
+},1800);
+
+}
+
+
+
+function escapeHTML(s) {
+
+return s.replace(
+/[&<>"']/g,
+
+c => ({
+
+"&":"&amp;",
+
+"<":"&lt;",
+
+">":"&gt;",
+
+'"':"&quot;",
+
+"'":"&#039;"
+
+}[c])
+
+);
+
+}
+
+
+
+populateSubjects();
+
+render();
+
+updateClock();
+
+</script>
+
+</body>
+</html>
