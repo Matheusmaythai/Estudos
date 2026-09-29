@@ -207,11 +207,11 @@ label{
 }
 
 .page{
-    display:block;
+    display:none;
 }
 
-.hidden{
-    display:none!important;
+.page.active{
+    display:block;
 }
 
 .timer{
@@ -1055,34 +1055,37 @@ function rankClass(rank){
 /* =========================
    NAVEGAÇÃO
 ========================= */
-
 window.showPage=function(id){
 
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.remove("active");
-  });
+    document.querySelectorAll(".page").forEach(p=>{
+        p.classList.remove("active");
+        p.classList.add("hidden");
+    });
 
-  const page=document.getElementById(id);
+    const page=document.getElementById(id);
 
-  if(page) page.classList.add("active");
+    if(page){
+        page.classList.remove("hidden");
+        page.classList.add("active");
+    }
 
-  document.querySelectorAll(".nav button").forEach(b=>{
-    b.classList.remove("selected");
+    document.querySelectorAll(".nav button").forEach(b=>{
+        b.classList.remove("active");
 
-    if(b.dataset.page===id)
-      b.classList.add("selected");
-  });
+        if(b.getAttribute("onclick")?.includes("'"+id+"'")){
+            b.classList.add("active");
+        }
+    });
 
-  if(id==="home") renderHome();
-  if(id==="tasks") renderTasks();
-  if(id==="subjects") renderSubjects();
-  if(id==="questions") renderQuestions();
-  if(id==="calendar") renderCalendar();
-  if(id==="progress") renderProgress();
-  if(id==="achievements") renderAchievements();
-  if(id==="profile") renderProfile();
+    if(id==="home") renderHome();
+    if(id==="tasks") renderTasks();
+    if(id==="subjects") renderSubjects();
+    if(id==="questions") renderQuestions();
+    if(id==="calendar") renderCalendar();
+    if(id==="progress") renderProgress();
+    if(id==="achievements") renderAchievements();
+    if(id==="profile") renderProfile();
 }
-
 
 /* =========================
    INÍCIO
