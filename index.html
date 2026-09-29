@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>StudyUp V2</title>
 
@@ -18,9 +18,13 @@ body{
     font-family:Arial,sans-serif;
 }
 
+button,input,textarea,select{
+    font-family:inherit;
+}
+
 .app{
-    display:flex;
     min-height:100vh;
+    display:flex;
 }
 
 .side{
@@ -29,14 +33,16 @@ body{
     border-right:1px solid #20283a;
     padding:18px;
     position:fixed;
-    inset:0 auto 0 0;
+    left:0;
+    top:0;
+    bottom:0;
     overflow:auto;
 }
 
 .logo{
     font-size:25px;
     font-weight:900;
-    margin:4px 8px 22px;
+    margin:5px 8px 22px;
 }
 
 .logo b{
@@ -53,6 +59,7 @@ body{
     color:#8e99ad;
     text-align:left;
     cursor:pointer;
+    font-size:14px;
 }
 
 .nav button:hover,
@@ -72,6 +79,10 @@ body{
     justify-content:space-between;
     align-items:center;
     margin-bottom:20px;
+}
+
+.top h1{
+    margin-bottom:5px;
 }
 
 .card{
@@ -160,34 +171,26 @@ label{
 .progress div{
     height:100%;
     background:#705cff;
+    transition:.3s;
 }
 
-.subject{
-    background:#151b27;
-    border:1px solid #293247;
-    border-radius:14px;
-    padding:16px;
+.page{
+    display:none;
 }
 
-.rank{
-    font-size:25px;
-    font-weight:900;
+.page.active{
+    display:block;
 }
-
-.rank-S{color:#ffcc4d}
-.rank-A{color:#ff6577}
-.rank-B{color:#a87cff}
-.rank-C{color:#5ea7ff}
-.rank-D{color:#5ce0a0}
-.rank-E{color:#a0a8b8}
 
 .task,
 .note,
+.achievement,
 .reminder,
-.achievement{
+.subject{
     background:#151b27;
-    border-radius:11px;
-    padding:12px;
+    border:1px solid #293247;
+    border-radius:12px;
+    padding:13px;
     margin:8px 0;
 }
 
@@ -206,13 +209,26 @@ label{
     color:#7f899b;
 }
 
-.page{
-    display:none;
+.subject{
+    transition:.2s;
 }
 
-.page.active{
-    display:block;
+.subject:hover{
+    border-color:#705cff;
+    transform:translateY(-2px);
 }
+
+.rank{
+    font-size:25px;
+    font-weight:900;
+}
+
+.rank-S{color:#ffcc4d}
+.rank-A{color:#ff6577}
+.rank-B{color:#a87cff}
+.rank-C{color:#5ea7ff}
+.rank-D{color:#5ce0a0}
+.rank-E{color:#a0a8b8}
 
 .timer{
     text-align:center;
@@ -243,10 +259,21 @@ label{
     border-color:#705cff;
 }
 
+.option.correct{
+    border-color:#35d07f;
+    background:#123323;
+}
+
+.option.wrong{
+    border-color:#ff5c70;
+    background:#35151c;
+}
+
 .calendar{
     display:grid;
     grid-template-columns:repeat(7,1fr);
-    gap:5px;
+    gap:6px;
+    margin-top:15px;
 }
 
 .day{
@@ -268,40 +295,36 @@ label{
     display:flex;
     height:200px;
     align-items:end;
-    gap:10px;
+    gap:8px;
+}
+
+.bar-container{
+    flex:1;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:end;
+    align-items:center;
+    gap:5px;
 }
 
 .bar{
-    flex:1;
+    width:100%;
     background:#705cff;
     border-radius:6px 6px 0 0;
     min-height:4px;
 }
 
-.modal{
-    position:fixed;
-    inset:0;
-    background:#000b;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    z-index:10;
+.small{
+    font-size:12px;
 }
 
-.modal-box{
-    background:#111722;
-    border:1px solid #293247;
-    border-radius:16px;
-    max-width:650px;
-    width:100%;
-    max-height:85vh;
-    overflow:auto;
-    padding:20px;
+.empty{
+    color:#8994a8;
+    padding:15px 0;
 }
 
 @media(max-width:950px){
-
     .grid{
         grid-template-columns:repeat(2,1fr);
     }
@@ -312,7 +335,6 @@ label{
 }
 
 @media(max-width:700px){
-
     .app{
         display:block;
     }
@@ -349,6 +371,16 @@ label{
     .timer-display{
         font-size:50px;
     }
+
+    .calendar{
+        gap:3px;
+    }
+
+    .day{
+        min-height:55px;
+        padding:5px;
+        font-size:12px;
+    }
 }
 </style>
 </head>
@@ -365,48 +397,18 @@ Study<b>Up</b> ⚔️
 
 <div class="nav">
 
-<button class="active" onclick="showPage('home')">
-🏠 Início
-</button>
-
-<button onclick="showPage('tasks')">
-✅ Tarefas
-</button>
-
-<button onclick="showPage('subjects')">
-📚 Matérias
-</button>
-
-<button onclick="showPage('timer')">
-⏱️ Cronômetro
-</button>
-
-<button onclick="showPage('notes')">
-📝 Anotações
-</button>
-
-<button onclick="showPage('questions')">
-❓ Questões
-</button>
-
-<button onclick="showPage('calendar')">
-📅 Calendário
-</button>
-
-<button onclick="showPage('progress')">
-📊 Progresso
-</button>
-
-<button onclick="showPage('achievements')">
-🏆 Conquistas
-</button>
-
-<button onclick="showPage('profile')">
-👤 Perfil
-</button>
+<button class="active" onclick="showPage('home')">🏠 Início</button>
+<button onclick="showPage('tasks')">✅ Tarefas</button>
+<button onclick="showPage('subjects')">📚 Matérias</button>
+<button onclick="showPage('timer')">⏱️ Cronômetro</button>
+<button onclick="showPage('notes')">📝 Anotações</button>
+<button onclick="showPage('questions')">❓ Questões</button>
+<button onclick="showPage('calendar')">📅 Calendário</button>
+<button onclick="showPage('progress')">📊 Progresso</button>
+<button onclick="showPage('achievements')">🏆 Conquistas</button>
+<button onclick="showPage('profile')">👤 Perfil</button>
 
 </div>
-
 </aside>
 
 <main class="main">
@@ -414,13 +416,8 @@ Study<b>Up</b> ⚔️
 <div class="top">
 
 <div>
-<h1 id="title">
-StudyUp
-</h1>
-
-<p id="subtitle">
-Seu sistema de estudos.
-</p>
+<h1 id="title">StudyUp</h1>
+<p id="subtitle">Seu sistema de estudos.</p>
 </div>
 
 <div class="card">
@@ -429,9 +426,10 @@ Seu sistema de estudos.
 
 </div>
 
+
 <!-- INÍCIO -->
 
-<section id="home" class="page">
+<section id="home" class="page active">
 
 <div class="grid">
 
@@ -465,9 +463,7 @@ Seu sistema de estudos.
 
 <h2>🎯 Meta diária</h2>
 
-<p id="dailyText">
-0 / 60 minutos
-</p>
+<p id="dailyText">0 / 60 minutos</p>
 
 <div class="progress">
 <div id="dailyBar" style="width:0%"></div>
@@ -477,9 +473,7 @@ Seu sistema de estudos.
 
 <h2>📅 Meta semanal</h2>
 
-<p id="weeklyText">
-0 / 300 minutos
-</p>
+<p id="weeklyText">0 / 300 minutos</p>
 
 <div class="progress">
 <div id="weeklyBar" style="width:0%"></div>
@@ -513,9 +507,10 @@ Ver tarefas
 
 </section>
 
+
 <!-- TAREFAS -->
 
-<section id="tasks" class="page hidden">
+<section id="tasks" class="page">
 
 <div class="card">
 
@@ -523,10 +518,7 @@ Ver tarefas
 
 <label>Tarefa</label>
 
-<input
-id="taskInput"
-placeholder="Ex.: estudar matemática"
->
+<input id="taskInput" placeholder="Ex.: estudar matemática">
 
 <label>Matéria</label>
 
@@ -544,16 +536,17 @@ Adicionar tarefa
 
 </section>
 
+
 <!-- MATÉRIAS -->
 
-<section id="subjects" class="page hidden">
+<section id="subjects" class="page">
 
 <div class="card">
 
 <h2>⚔️ Sistema de Matérias</h2>
 
 <p class="muted">
-Estude, ganhe XP e aumente o rank de cada matéria.
+Estude, complete tarefas e responda questões para ganhar XP.
 </p>
 
 </div>
@@ -564,9 +557,10 @@ Estude, ganhe XP e aumente o rank de cada matéria.
 
 </section>
 
+
 <!-- CRONÔMETRO -->
 
-<section id="timer" class="page hidden">
+<section id="timer" class="page">
 
 <div class="card timer">
 
@@ -576,17 +570,9 @@ Estude, ganhe XP e aumente o rank de cada matéria.
 25:00
 </div>
 
-<button class="btn secondary" onclick="setTimer(25)">
-25 min
-</button>
-
-<button class="btn secondary" onclick="setTimer(45)">
-45 min
-</button>
-
-<button class="btn secondary" onclick="setTimer(60)">
-60 min
-</button>
+<button class="btn secondary" onclick="setTimer(25)">25 min</button>
+<button class="btn secondary" onclick="setTimer(45)">45 min</button>
+<button class="btn secondary" onclick="setTimer(60)">60 min</button>
 
 <br><br>
 
@@ -602,9 +588,10 @@ Estude, ganhe XP e aumente o rank de cada matéria.
 
 </section>
 
+
 <!-- ANOTAÇÕES -->
 
-<section id="notes" class="page hidden">
+<section id="notes" class="page">
 
 <div class="card">
 
@@ -612,10 +599,7 @@ Estude, ganhe XP e aumente o rank de cada matéria.
 
 <label>Título</label>
 
-<input
-id="noteTitle"
-placeholder="Título da anotação"
->
+<input id="noteTitle" placeholder="Título da anotação">
 
 <label>Matéria</label>
 
@@ -623,10 +607,7 @@ placeholder="Título da anotação"
 
 <label>Texto</label>
 
-<textarea
-id="noteText"
-placeholder="Escreva aqui..."
-></textarea>
+<textarea id="noteText" placeholder="Escreva aqui..."></textarea>
 
 <br><br>
 
@@ -640,9 +621,10 @@ Salvar
 
 </section>
 
+
 <!-- QUESTÕES -->
 
-<section id="questions" class="page hidden">
+<section id="questions" class="page">
 
 <div class="card">
 
@@ -653,7 +635,7 @@ Salvar
 <select id="quizSubject" onchange="startQuiz()"></select>
 
 <h3 id="questionText">
-Questão
+Escolha uma matéria para começar.
 </h3>
 
 <div id="options" class="options"></div>
@@ -668,23 +650,25 @@ Próxima →
 
 </section>
 
+
 <!-- CALENDÁRIO -->
 
-<section id="calendar" class="page hidden">
+<section id="calendar" class="page">
 
 <div class="card">
 
 <h2>📅 Calendário</h2>
 
-<div id="calendar"></div>
+<div id="calendarContent"></div>
 
 </div>
 
 </section>
 
+
 <!-- PROGRESSO -->
 
-<section id="progress" class="page hidden">
+<section id="progress" class="page">
 
 <div class="grid">
 
@@ -714,7 +698,7 @@ Próxima →
 
 <div class="card">
 
-<h2>📊 Seu progresso</h2>
+<h2>📊 Últimos 7 dias</h2>
 
 <div class="chart" id="progressChart"></div>
 
@@ -722,9 +706,10 @@ Próxima →
 
 </section>
 
+
 <!-- CONQUISTAS -->
 
-<section id="achievements" class="page hidden">
+<section id="achievements" class="page">
 
 <div class="card">
 
@@ -736,9 +721,10 @@ Próxima →
 
 </section>
 
+
 <!-- PERFIL -->
 
-<section id="profile" class="page hidden">
+<section id="profile" class="page">
 
 <div class="two">
 
@@ -768,6 +754,8 @@ Salvar perfil
 
 <br><br>
 
+<label>Importar backup</label>
+
 <input
 type="file"
 id="importFile"
@@ -782,1552 +770,1355 @@ onchange="importData(event)"
 </section>
 
 </main>
-
 </div>
 
+
 <script>
-/* =========================
-   STUDYUP V2 — SISTEMA
-========================= */
+
+/* =====================================================
+   MATÉRIAS
+===================================================== */
 
 const SUBJECTS = {
-  "Matemática": {
-    icon:"📐",
-    topics:["Números","Álgebra","Equações","Geometria","Funções","Probabilidade"],
-    questions:[
-      ["Quanto é 12 × 8?",["86","96","108","88"],1],
-      ["Qual é o resultado de 25 + 37?",["52","62","72","57"],1],
-      ["Quanto é 144 ÷ 12?",["10","11","12","14"],2]
-    ]
-  },
 
-  "Português": {
-    icon:"📚",
-    topics:["Gramática","Interpretação","Literatura","Ortografia","Redação"],
-    questions:[
-      ["Qual é um substantivo?",["correr","bonito","casa","rapidamente"],2],
-      ["Qual palavra está escrita corretamente?",["excessão","exceção","eseção","excessão"],1],
-      ["O que é um verbo?",["Uma ação ou estado","Um objeto","Uma qualidade","Um número"],0]
-    ]
-  },
+"Matemática":{
+icon:"📐",
+topics:["Números","Álgebra","Equações","Geometria","Funções"],
+questions:[
+["Quanto é 12 × 8?",["86","96","108","88"],1],
+["Quanto é 25 + 37?",["52","62","72","57"],1],
+["Quanto é 144 ÷ 12?",["10","11","12","14"],2]
+]
+},
 
-  "História": {
-    icon:"🏛️",
-    topics:["Antiguidade","Idade Média","Brasil","Revoluções","Século XX"],
-    questions:[
-      ["Em que ano começou a Segunda Guerra Mundial?",["1914","1939","1945","1964"],1],
-      ["Quem chegou ao Brasil em 1500?",["Cristóvão Colombo","Pedro Álvares Cabral","Vasco da Gama","Napoleão"],1],
-      ["Qual civilização construiu as pirâmides de Gizé?",["Romana","Egípcia","Grega","Maia"],1]
-    ]
-  },
+"Português":{
+icon:"📚",
+topics:["Gramática","Interpretação","Literatura","Ortografia"],
+questions:[
+["Qual é um substantivo?",["correr","bonito","casa","rapidamente"],2],
+["Qual está correta?",["excessão","exceção","eseção","excessão"],1],
+["O que é um verbo?",["Ação ou estado","Objeto","Qualidade","Número"],0]
+]
+},
 
-  "Geografia": {
-    icon:"🌎",
-    topics:["Relevo","Clima","População","Economia","Cartografia","Geopolítica"],
-    questions:[
-      ["Qual é o maior país da América do Sul?",["Argentina","Brasil","Chile","Peru"],1],
-      ["Qual é o maior oceano do planeta?",["Atlântico","Índico","Pacífico","Ártico"],2],
-      ["O que é latitude?",["Distância em relação ao Equador","Altura de uma montanha","Distância entre cidades","Profundidade"],0]
-    ]
-  },
+"História":{
+icon:"🏛️",
+topics:["Antiguidade","Brasil","Revoluções","Século XX"],
+questions:[
+["Quando começou a Segunda Guerra Mundial?",["1914","1939","1945","1964"],1],
+["Quem chegou ao Brasil em 1500?",["Colombo","Cabral","Vasco da Gama","Napoleão"],1],
+["Quem construiu as pirâmides de Gizé?",["Romanos","Egípcios","Gregos","Maias"],1]
+]
+},
 
-  "Ciências": {
-    icon:"🔬",
-    topics:["Corpo Humano","Ecologia","Matéria","Energia","Sistema Solar"],
-    questions:[
-      ["Qual órgão bombeia o sangue?",["Pulmão","Cérebro","Coração","Fígado"],2],
-      ["Qual planeta é conhecido como planeta vermelho?",["Vênus","Marte","Júpiter","Saturno"],1],
-      ["Qual gás é essencial para a respiração humana?",["Oxigênio","Hélio","Neônio","Hidrogênio"],0]
-    ]
-  },
+"Geografia":{
+icon:"🌎",
+topics:["Relevo","Clima","População","Cartografia"],
+questions:[
+["Maior país da América do Sul?",["Argentina","Brasil","Chile","Peru"],1],
+["Maior oceano?",["Atlântico","Índico","Pacífico","Ártico"],2],
+["Latitude é medida em relação ao:",["Equador","Polo","Oceano","Meridiano"],0]
+]
+},
 
-  "Inglês": {
-    icon:"🇺🇸",
-    topics:["Vocabulário","Gramática","Verbos","Tempos Verbais","Conversação"],
-    questions:[
-      ["O que significa 'book'?",["Caneta","Livro","Mesa","Escola"],1],
-      ["Qual é o passado de 'go'?",["goed","going","went","gone"],2],
-      ["'Good morning' significa:",["Boa noite","Bom dia","Boa tarde","Até logo"],1]
-    ]
-  },
+"Ciências":{
+icon:"🔬",
+topics:["Corpo Humano","Ecologia","Energia","Sistema Solar"],
+questions:[
+["Qual órgão bombeia o sangue?",["Pulmão","Cérebro","Coração","Fígado"],2],
+["Qual planeta é conhecido como vermelho?",["Vênus","Marte","Júpiter","Saturno"],1],
+["Qual gás é essencial para a respiração?",["Oxigênio","Hélio","Neônio","Hidrogênio"],0]
+]
+},
 
-  "Química": {
-    icon:"⚗️",
-    topics:["Átomos","Elementos","Tabela Periódica","Reações","Química Orgânica"],
-    questions:[
-      ["Qual é o símbolo químico da água?",["CO₂","H₂O","O₂","NaCl"],1],
-      ["Qual partícula possui carga negativa?",["Próton","Nêutron","Elétron","Núcleo"],2],
-      ["Qual é o símbolo do oxigênio?",["O","Ox","Og","X"],0]
-    ]
-  },
+"Inglês":{
+icon:"🇺🇸",
+topics:["Vocabulário","Gramática","Verbos","Conversação"],
+questions:[
+["'Book' significa:",["Caneta","Livro","Mesa","Escola"],1],
+["Passado de 'go':",["goed","going","went","gone"],2],
+["'Good morning' significa:",["Boa noite","Bom dia","Boa tarde","Até logo"],1]
+]
+},
 
-  "Física": {
-    icon:"⚡",
-    topics:["Movimento","Força","Energia","Eletricidade","Ondas","Gravidade"],
-    questions:[
-      ["Qual é a unidade de força?",["Watt","Newton","Joule","Volt"],1],
-      ["Qual é aproximadamente a velocidade da luz?",["300 km/s","3.000 km/s","300.000 km/s","30.000 km/s"],2],
-      ["Qual força atrai objetos para a Terra?",["Atrito","Gravidade","Magnetismo","Pressão"],1]
-    ]
-  },
+"Química":{
+icon:"⚗️",
+topics:["Átomos","Elementos","Tabela Periódica","Reações"],
+questions:[
+["Fórmula da água:",["CO₂","H₂O","O₂","NaCl"],1],
+["Partícula com carga negativa:",["Próton","Nêutron","Elétron","Núcleo"],2],
+["Símbolo do oxigênio:",["O","Ox","Og","X"],0]
+]
+},
 
-  "Biologia": {
-    icon:"🧬",
-    topics:["Célula","Genética","Ecologia","Evolução","Anatomia"],
-    questions:[
-      ["Qual é a unidade básica da vida?",["Átomo","Célula","Tecido","Órgão"],1],
-      ["Qual molécula contém a informação genética?",["DNA","Água","Glicose","ATP"],0],
-      ["Qual organela produz grande parte do ATP?",["Núcleo","Mitocôndria","Ribossomo","Lisossomo"],1]
-    ]
-  },
+"Física":{
+icon:"⚡",
+topics:["Movimento","Força","Energia","Eletricidade"],
+questions:[
+["Unidade de força:",["Watt","Newton","Joule","Volt"],1],
+["Velocidade aproximada da luz:",["300 km/s","3.000 km/s","300.000 km/s","30.000 km/s"],2],
+["Força que atrai objetos para a Terra:",["Atrito","Gravidade","Magnetismo","Pressão"],1]
+]
+},
 
-  "Filosofia": {
-    icon:"🧠",
-    topics:["Sócrates","Platão","Aristóteles","Ética","Conhecimento"],
-    questions:[
-      ["Quem foi discípulo de Sócrates?",["Platão","Aristóteles","Descartes","Kant"],0],
-      ["A filosofia busca principalmente:",["Memorizar fatos","Investigar questões fundamentais","Fazer cálculos","Estudar mapas"],1]
-    ]
-  },
+"Biologia":{
+icon:"🧬",
+topics:["Célula","Genética","Ecologia","Anatomia"],
+questions:[
+["Unidade básica da vida:",["Átomo","Célula","Tecido","Órgão"],1],
+["Molécula que contém informação genética:",["DNA","Água","Glicose","ATP"],0],
+["Organela que produz grande parte do ATP:",["Núcleo","Mitocôndria","Ribossomo","Lisossomo"],1]
+]
+},
 
-  "Sociologia": {
-    icon:"👥",
-    topics:["Sociedade","Cultura","Política","Desigualdade","Instituições"],
-    questions:[
-      ["O que a Sociologia estuda principalmente?",["A sociedade","Os planetas","Os átomos","As plantas"],0],
-      ["Cultura pode incluir:",["Costumes e valores","Somente dinheiro","Somente leis","Somente tecnologia"],0]
-    ]
-  },
+"Filosofia":{
+icon:"🧠",
+topics:["Sócrates","Platão","Aristóteles","Ética"],
+questions:[
+["Quem foi discípulo de Sócrates?",["Platão","Aristóteles","Descartes","Kant"],0],
+["Filosofia busca principalmente:",["Memorizar","Investigar questões fundamentais","Calcular","Mapear"],1]
+]
+},
 
-  "Artes": {
-    icon:"🎨",
-    topics:["Pintura","Música","Teatro","Dança","Cinema"],
-    questions:[
-      ["Qual destas é uma linguagem artística?",["Pintura","Álgebra","Geometria","Química"],0],
-      ["O teatro utiliza principalmente:",["Representação cênica","Cálculos","Mapas","Experimentos químicos"],0]
-    ]
-  },
+"Sociologia":{
+icon:"👥",
+topics:["Sociedade","Cultura","Desigualdade","Instituições"],
+questions:[
+["O que a Sociologia estuda?",["Sociedade","Planetas","Átomos","Plantas"],0],
+["Cultura pode incluir:",["Costumes e valores","Somente dinheiro","Somente leis","Somente tecnologia"],0]
+]
+},
 
-  "Espanhol": {
-    icon:"🇪🇸",
-    topics:["Vocabulário","Gramática","Verbos","Conversação"],
-    questions:[
-      ["O que significa 'hola'?",["Adeus","Olá","Obrigado","Por favor"],1],
-      ["'Gracias' significa:",["Obrigado","Desculpa","Olá","Sim"],0]
-    ]
-  },
+"Artes":{
+icon:"🎨",
+topics:["Pintura","Música","Teatro","Cinema"],
+questions:[
+["Qual é uma linguagem artística?",["Pintura","Álgebra","Geometria","Química"],0],
+["Teatro utiliza principalmente:",["Representação cênica","Cálculos","Mapas","Experimentos"],0]
+]
+},
 
-  "Tecnologia": {
-    icon:"💻",
-    topics:["Computadores","Internet","Programação","IA","Segurança Digital"],
-    questions:[
-      ["HTML é usado principalmente para:",["Estruturar páginas web","Editar vídeos","Criar músicas","Montar computadores"],0],
-      ["CSS é usado principalmente para:",["Estilizar páginas","Criar bancos","Navegar na internet","Proteger arquivos"],0],
-      ["JavaScript é uma:",["Linguagem de programação","Placa de vídeo","Rede social","Sistema operacional"],0]
-    ]
-  },
+"Espanhol":{
+icon:"🇪🇸",
+topics:["Vocabulário","Gramática","Verbos"],
+questions:[
+["'Hola' significa:",["Adeus","Olá","Obrigado","Por favor"],1],
+["'Gracias' significa:",["Obrigado","Desculpa","Olá","Sim"],0]
+]
+},
 
-  "Educação Financeira": {
-    icon:"💰",
-    topics:["Dinheiro","Orçamento","Poupança","Investimentos","Consumo"],
-    questions:[
-      ["O que é orçamento?",["Planejamento de receitas e despesas","Um tipo de imposto","Uma conta bancária","Um cartão"],0],
-      ["Poupar significa:",["Guardar parte do dinheiro","Gastar tudo","Pedir dinheiro","Fazer dívida"],0]
-    ]
-  }
+"Tecnologia":{
+icon:"💻",
+topics:["Computadores","Internet","Programação","IA"],
+questions:[
+["HTML é usado para:",["Estruturar páginas web","Editar vídeos","Criar músicas","Montar computadores"],0],
+["CSS é usado para:",["Estilizar páginas","Criar bancos","Navegar","Proteger arquivos"],0],
+["JavaScript é:",["Linguagem de programação","Placa de vídeo","Rede social","Sistema operacional"],0]
+]
+},
+
+"Educação Financeira":{
+icon:"💰",
+topics:["Dinheiro","Orçamento","Poupança","Consumo"],
+questions:[
+["O que é orçamento?",["Planejamento de receitas e despesas","Imposto","Conta bancária","Cartão"],0],
+["Poupar significa:",["Guardar parte do dinheiro","Gastar tudo","Pedir dinheiro","Fazer dívida"],0]
+]
+}
+
 };
 
 
-/* =========================
+/* =====================================================
    BANCO DE DADOS
-========================= */
+===================================================== */
 
 const defaultDB = {
-  xp:0,
-  level:1,
-  streak:0,
-  lastStudy:"",
-  totalMinutes:0,
-  answered:0,
-  correct:0,
-  tasks:[],
-  notes:[],
-  studyDays:{},
-  dailyMinutes:{},
-  subjectXP:{},
-  subjectTopics:{},
-  dailyGoal:60,
-  weeklyGoal:300,
-  profileName:"Estudante"
+xp:0,
+level:1,
+streak:0,
+lastStudy:"",
+totalMinutes:0,
+answered:0,
+correct:0,
+tasks:[],
+notes:[],
+studyDays:{},
+dailyMinutes:{},
+subjectXP:{},
+dailyGoal:60,
+weeklyGoal:300,
+profileName:"Estudante"
 };
 
 let db;
 
-try {
-  db = JSON.parse(localStorage.getItem("studyup_v2")) || defaultDB;
-} catch(e) {
-  db = defaultDB;
+try{
+    db=JSON.parse(localStorage.getItem("studyup_v2"));
+
+    if(!db) db=structuredClone(defaultDB);
+
+}catch(e){
+    db=structuredClone(defaultDB);
 }
+
+
+/* Garante que dados antigos não quebrem o site */
+
+db.tasks=db.tasks || [];
+db.notes=db.notes || [];
+db.studyDays=db.studyDays || {};
+db.dailyMinutes=db.dailyMinutes || {};
+db.subjectXP=db.subjectXP || {};
+db.dailyGoal=db.dailyGoal || 60;
+db.weeklyGoal=db.weeklyGoal || 300;
+db.xp=db.xp || 0;
+db.level=db.level || 1;
+db.streak=db.streak || 0;
+db.totalMinutes=db.totalMinutes || 0;
+db.answered=db.answered || 0;
+db.correct=db.correct || 0;
+
 
 function save(){
-  localStorage.setItem("studyup_v2",JSON.stringify(db));
+    localStorage.setItem("studyup_v2",JSON.stringify(db));
 }
 
-
-/* =========================
-   UTILIDADES
-========================= */
 
 function today(){
-  const d = new Date();
-  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+
+    const d=new Date();
+
+    return d.getFullYear()+"-"+
+        String(d.getMonth()+1).padStart(2,"0")+"-"+
+        String(d.getDate()).padStart(2,"0");
 }
+
 
 function escapeHTML(text){
-  return String(text)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 }
+
+
+/* =====================================================
+   XP
+===================================================== */
 
 function addXP(amount,subject=null){
-  db.xp += amount;
 
-  if(subject){
-    if(!db.subjectXP[subject]) db.subjectXP[subject]=0;
-    db.subjectXP[subject]+=amount;
-  }
+    db.xp+=amount;
 
-  db.level = Math.floor(db.xp/100)+1;
-  save();
-  updateAll();
-}
+    if(subject){
 
-function markStudy(minutes=0){
-  const t=today();
+        if(!db.subjectXP[subject])
+            db.subjectXP[subject]=0;
 
-  if(!db.studyDays[t]){
-    db.studyDays[t]=true;
-
-    if(db.lastStudy){
-      const old=new Date(db.lastStudy+"T00:00:00");
-      const now=new Date(t+"T00:00:00");
-      const diff=Math.round((now-old)/86400000);
-
-      if(diff===1) db.streak++;
-      else if(diff>1) db.streak=1;
-    }else{
-      db.streak=1;
+        db.subjectXP[subject]+=amount;
     }
 
-    db.lastStudy=t;
-  }
+    db.level=Math.floor(db.xp/100)+1;
 
-  if(minutes>0){
-    db.totalMinutes+=minutes;
-
-    if(!db.dailyMinutes[t])
-      db.dailyMinutes[t]=0;
-
-    db.dailyMinutes[t]+=minutes;
-  }
-
-  save();
-  updateAll();
+    save();
+    updateAll();
 }
+
+
+/* =====================================================
+   REGISTRAR ESTUDO
+===================================================== */
+
+function markStudy(minutes=0){
+
+    const t=today();
+
+    if(!db.studyDays[t]){
+
+        db.studyDays[t]=true;
+
+        if(db.lastStudy){
+
+            const old=new Date(db.lastStudy+"T00:00:00");
+            const now=new Date(t+"T00:00:00");
+
+            const diff=Math.round(
+                (now-old)/86400000
+            );
+
+            if(diff===1)
+                db.streak++;
+
+            else if(diff>1)
+                db.streak=1;
+
+        }else{
+
+            db.streak=1;
+        }
+
+        db.lastStudy=t;
+    }
+
+    if(minutes>0){
+
+        db.totalMinutes+=minutes;
+
+        if(!db.dailyMinutes[t])
+            db.dailyMinutes[t]=0;
+
+        db.dailyMinutes[t]+=minutes;
+    }
+
+    save();
+    updateAll();
+}
+
+
+/* =====================================================
+   RANK
+===================================================== */
 
 function getRank(xp){
-  if(xp>=2000) return "S";
-  if(xp>=1000) return "A";
-  if(xp>=500) return "B";
-  if(xp>=250) return "C";
-  if(xp>=100) return "D";
-  return "E";
+
+    if(xp>=2000) return "S";
+    if(xp>=1000) return "A";
+    if(xp>=500) return "B";
+    if(xp>=250) return "C";
+    if(xp>=100) return "D";
+
+    return "E";
 }
 
-function rankClass(rank){
-  return "rank-"+rank;
-}
 
-
-/* =========================
+/* =====================================================
    NAVEGAÇÃO
-========================= */
+===================================================== */
+
 window.showPage=function(id){
 
-    document.querySelectorAll(".page").forEach(p=>{
-        p.classList.remove("active");
-        p.classList.add("hidden");
+    document.querySelectorAll(".page").forEach(page=>{
+        page.classList.remove("active");
     });
 
     const page=document.getElementById(id);
 
-    if(page){
-        page.classList.remove("hidden");
+    if(page)
         page.classList.add("active");
-    }
 
-    document.querySelectorAll(".nav button").forEach(b=>{
-        b.classList.remove("active");
+    document.querySelectorAll(".nav button").forEach(button=>{
+        button.classList.remove("active");
 
-        if(b.getAttribute("onclick")?.includes("'"+id+"'")){
-            b.classList.add("active");
-        }
+        const onclick=button.getAttribute("onclick") || "";
+
+        if(onclick.includes("'"+id+"'"))
+            button.classList.add("active");
     });
 
     if(id==="home") renderHome();
     if(id==="tasks") renderTasks();
     if(id==="subjects") renderSubjects();
+    if(id==="notes") renderNotes();
     if(id==="questions") renderQuestions();
     if(id==="calendar") renderCalendar();
     if(id==="progress") renderProgress();
     if(id==="achievements") renderAchievements();
     if(id==="profile") renderProfile();
-}
+};
 
-/* =========================
+
+/* =====================================================
    INÍCIO
-========================= */
+===================================================== */
 
 function renderHome(){
 
-  const name=escapeHTML(db.profileName || "Estudante");
+    const t=today();
 
-  document.getElementById("welcome").innerHTML=
-    `Olá, <b>${name}</b>. Pronto para evoluir?`;
+    const minutes=db.dailyMinutes[t] || 0;
 
-  document.getElementById("homeXP").textContent=db.xp+" XP";
-  document.getElementById("homeLevel").textContent="Nível "+db.level;
-  document.getElementById("homeStreak").textContent=db.streak+" dias";
-  document.getElementById("homeMinutes").textContent=db.totalMinutes+" min";
+    const dailyPercent=Math.min(
+        100,
+        Math.round(minutes/db.dailyGoal*100)
+    );
 
-  const todayMinutes=db.dailyMinutes[today()]||0;
+    let weekly=0;
 
-  const pct=Math.min(100,Math.round(todayMinutes/db.dailyGoal*100));
+    for(let i=0;i<7;i++){
 
-  document.getElementById("dailyBar").style.width=pct+"%";
-  document.getElementById("dailyText").textContent=
-    todayMinutes+" / "+db.dailyGoal+" minutos";
+        const d=new Date();
+
+        d.setDate(d.getDate()-i);
+
+        const key=
+            d.getFullYear()+"-"+
+            String(d.getMonth()+1).padStart(2,"0")+"-"+
+            String(d.getDate()).padStart(2,"0");
+
+        weekly+=db.dailyMinutes[key] || 0;
+    }
+
+    const weeklyPercent=Math.min(
+        100,
+        Math.round(weekly/db.weeklyGoal*100)
+    );
+
+    document.getElementById("level").textContent=db.level;
+    document.getElementById("xp").textContent=db.xp;
+    document.getElementById("streak").textContent=db.streak;
+    document.getElementById("todayMinutes").textContent=minutes;
+    document.getElementById("goalPercent").textContent=dailyPercent+"%";
+
+    document.getElementById("dailyText").textContent=
+        minutes+" / "+db.dailyGoal+" minutos";
+
+    document.getElementById("dailyBar").style.width=
+        dailyPercent+"%";
+
+    document.getElementById("weeklyText").textContent=
+        weekly+" / "+db.weeklyGoal+" minutos";
+
+    document.getElementById("weeklyBar").style.width=
+        weeklyPercent+"%";
+
+
+    const homeTasks=document.getElementById("homeTasks");
+
+    const pending=db.tasks.filter(t=>!t.done).slice(0,4);
+
+    if(pending.length===0){
+
+        homeTasks.innerHTML=
+            `<div class="empty">Nenhuma tarefa pendente.</div>`;
+
+    }else{
+
+        homeTasks.innerHTML=pending.map(t=>`
+            <div class="task">
+                <div class="task-name">
+                    ${escapeHTML(t.name)}
+                </div>
+            </div>
+        `).join("");
+    }
+
+    renderChart("homeChart");
 }
 
 
-/* =========================
+/* =====================================================
    TAREFAS
-========================= */
+===================================================== */
+
+function fillSubjectSelect(id){
+
+    const select=document.getElementById(id);
+
+    if(!select) return;
+
+    select.innerHTML="";
+
+    Object.keys(SUBJECTS).forEach(subject=>{
+
+        const option=document.createElement("option");
+
+        option.value=subject;
+        option.textContent=subject;
+
+        select.appendChild(option);
+    });
+}
+
 
 function addTask(){
 
-  const input=document.getElementById("taskInput");
-  const subject=document.getElementById("taskSubject");
+    const input=document.getElementById("taskInput");
+    const subject=document.getElementById("taskSubject");
 
-  const title=input.value.trim();
+    const name=input.value.trim();
 
-  if(!title) return;
+    if(!name) return;
 
-  db.tasks.push({
-    id:Date.now(),
-    title:title,
-    subject:subject.value,
-    done:false,
-    date:today()
-  });
+    db.tasks.push({
+        id:Date.now(),
+        name:name,
+        subject:subject.value,
+        done:false
+    });
 
-  input.value="";
-
-  save();
-  renderTasks();
-  updateAll();
-}
-
-function toggleTask(id){
-
-  const task=db.tasks.find(t=>t.id===id);
-
-  if(!task) return;
-
-  task.done=!task.done;
-
-  if(task.done){
-    addXP(25,task.subject);
-    markStudy();
-  }else{
-    db.xp=Math.max(0,db.xp-25);
-
-    if(task.subject){
-      db.subjectXP[task.subject]=Math.max(
-        0,
-        (db.subjectXP[task.subject]||0)-25
-      );
-    }
+    input.value="";
 
     save();
-  }
 
-  renderTasks();
-  updateAll();
+    renderTasks();
+    renderHome();
 }
+
+
+function completeTask(id){
+
+    const task=db.tasks.find(t=>t.id===id);
+
+    if(!task || task.done) return;
+
+    task.done=true;
+
+    addXP(20,task.subject);
+
+    markStudy();
+
+    renderTasks();
+}
+
 
 function deleteTask(id){
 
-  db.tasks=db.tasks.filter(t=>t.id!==id);
+    db.tasks=db.tasks.filter(t=>t.id!==id);
 
-  save();
-  renderTasks();
+    save();
+
+    renderTasks();
+    renderHome();
 }
+
 
 function renderTasks(){
 
-  const box=document.getElementById("taskList");
+    const list=document.getElementById("taskList");
 
-  if(!db.tasks.length){
-    box.innerHTML=
-      `<div class="empty">Nenhuma tarefa cadastrada.</div>`;
-    return;
-  }
+    if(!list) return;
 
-  box.innerHTML=db.tasks.map(t=>`
-    <div class="task ${t.done?"done":""}">
-      <button onclick="toggleTask(${t.id})">
-        ${t.done?"✓":"○"}
-      </button>
+    if(db.tasks.length===0){
 
-      <div class="taskInfo">
-        <b>${escapeHTML(t.title)}</b>
-        <small>${escapeHTML(t.subject||"Geral")}</small>
-      </div>
+        list.innerHTML=
+            `<div class="empty">Nenhuma tarefa criada ainda.</div>`;
 
-      <button class="delete" onclick="deleteTask(${t.id})">
-        🗑️
-      </button>
-    </div>
-  `).join("");
+        return;
+    }
+
+    list.innerHTML=db.tasks.map(task=>`
+
+        <div class="task ${task.done ? "done":""}">
+
+            <input
+                type="checkbox"
+                ${task.done ? "checked":""}
+                onchange="completeTask(${task.id})"
+            >
+
+            <div class="task-name">
+                <b>${escapeHTML(task.name)}</b>
+                <div class="muted small">
+                    ${escapeHTML(task.subject)}
+                </div>
+            </div>
+
+            <button
+                class="btn secondary"
+                onclick="deleteTask(${task.id})">
+                🗑️
+            </button>
+
+        </div>
+
+    `).join("");
 }
 
 
-/* =========================
+/* =====================================================
    MATÉRIAS
-========================= */
+===================================================== */
 
 function renderSubjects(){
 
-  const box=document.getElementById("subjectGrid");
+    const container=document.getElementById("subjectList");
 
-  box.innerHTML=Object.entries(SUBJECTS).map(([name,data])=>{
+    if(!container) return;
 
-    const xp=db.subjectXP[name]||0;
-    const rank=getRank(xp);
-    const level=Math.floor(xp/100)+1;
+    container.innerHTML="";
 
-    const progress=xp%100;
+    Object.entries(SUBJECTS).forEach(([name,data])=>{
 
-    return `
-      <div class="subjectCard">
+        const xp=db.subjectXP[name] || 0;
+        const rank=getRank(xp);
 
-        <div class="subjectTop">
-          <span class="subjectIcon">${data.icon}</span>
+        const div=document.createElement("div");
 
-          <div>
-            <h3>${name}</h3>
-            <span>${data.topics.length} conteúdos</span>
-          </div>
+        div.className="subject";
 
-          <strong class="${rankClass(rank)}">${rank}</strong>
-        </div>
+        div.innerHTML=`
 
-        <div class="subjectStats">
-          <span>Nível ${level}</span>
-          <span>${xp} XP</span>
-        </div>
+            <div style="font-size:32px">
+                ${data.icon}
+            </div>
 
-        <div class="bar">
-          <i style="width:${progress}%"></i>
-        </div>
+            <h3>
+                ${escapeHTML(name)}
+            </h3>
 
-        <button onclick="openSubject('${name.replaceAll("'","\\'")}')">
-          ESTUDAR
-        </button>
+            <div class="rank rank-${rank}">
+                Rank ${rank}
+            </div>
 
-      </div>
-    `;
-  }).join("");
-}
+            <p class="muted">
+                ${xp} XP
+            </p>
 
-function openSubject(name){
+            <div class="progress">
+                <div style="width:${Math.min(100,xp%100)}%"></div>
+            </div>
 
-  const data=SUBJECTS[name];
+            <br>
 
-  document.getElementById("subjectTitle").textContent=
-    data.icon+" "+name;
+            <button
+                class="btn"
+                onclick="studySubject('${escapeHTML(name)}')">
+                + Estudar
+            </button>
 
-  document.getElementById("subjectContent").innerHTML=`
-    <div class="subjectDetail">
+        `;
 
-      <h2>Conteúdos</h2>
-
-      <div class="topicList">
-        ${data.topics.map((topic,i)=>`
-          <button onclick="completeTopic('${name.replaceAll("'","\\'")}',${i})">
-            <span>${i+1}</span>
-            ${topic}
-            <b>+20 XP</b>
-          </button>
-        `).join("")}
-      </div>
-
-      <h2>Sobre a matéria</h2>
-
-      <p>
-        Estude cada conteúdo com atenção, faça exercícios
-        e revise os pontos em que teve dificuldade.
-      </p>
-
-    </div>
-  `;
-
-  showPage("subject");
-}
-
-function completeTopic(name,index){
-
-  if(!db.subjectTopics[name])
-    db.subjectTopics[name]=[];
-
-  if(db.subjectTopics[name].includes(index)){
-    alert("Você já concluiu este conteúdo.");
-    return;
-  }
-
-  db.subjectTopics[name].push(index);
-
-  addXP(20,name);
-  markStudy();
-
-  alert("Conteúdo concluído! +20 XP");
-
-  openSubject(name);
+        container.appendChild(div);
+    });
 }
 
 
-/* =========================
-   NOTAS
-========================= */
+function studySubject(subject){
+
+    addXP(25,subject);
+
+    markStudy(10);
+
+    alert(
+        "📚 Estudo registrado!\n\n"+
+        "+25 XP\n"+
+        "+10 minutos"
+    );
+}
+
+
+/* =====================================================
+   ANOTAÇÕES
+===================================================== */
 
 function addNote(){
 
-  const title=document.getElementById("noteTitle").value.trim();
-  const text=document.getElementById("noteText").value.trim();
+    const title=document.getElementById("noteTitle").value.trim();
+    const subject=document.getElementById("noteSubject").value;
+    const text=document.getElementById("noteText").value.trim();
 
-  if(!text) return;
+    if(!title && !text) return;
 
-  db.notes.push({
-    id:Date.now(),
-    title:title||"Anotação",
-    text:text,
-    date:new Date().toLocaleDateString("pt-BR")
-  });
+    db.notes.unshift({
+        id:Date.now(),
+        title:title || "Sem título",
+        subject:subject,
+        text:text,
+        date:today()
+    });
 
-  document.getElementById("noteTitle").value="";
-  document.getElementById("noteText").value="";
+    document.getElementById("noteTitle").value="";
+    document.getElementById("noteText").value="";
 
-  save();
-  renderNotes();
+    save();
+
+    addXP(10,subject);
+
+    renderNotes();
 }
+
 
 function deleteNote(id){
 
-  db.notes=db.notes.filter(n=>n.id!==id);
+    db.notes=db.notes.filter(n=>n.id!==id);
 
-  save();
-  renderNotes();
+    save();
+
+    renderNotes();
 }
+
 
 function renderNotes(){
 
-  const box=document.getElementById("notesList");
+    const list=document.getElementById("noteList");
 
-  if(!db.notes.length){
-    box.innerHTML=
-      `<div class="empty">Nenhuma anotação.</div>`;
-    return;
-  }
+    if(!list) return;
 
-  box.innerHTML=db.notes.map(n=>`
-    <div class="note">
-      <div>
-        <h3>${escapeHTML(n.title)}</h3>
-        <small>${n.date}</small>
-      </div>
+    if(db.notes.length===0){
 
-      <p>${escapeHTML(n.text)}</p>
+        list.innerHTML=
+            `<div class="empty">Nenhuma anotação salva.</div>`;
 
-      <button onclick="deleteNote(${n.id})">Excluir</button>
-    </div>
-  `).join("");
+        return;
+    }
+
+    list.innerHTML=db.notes.map(note=>`
+
+        <div class="note">
+
+            <h3>${escapeHTML(note.title)}</h3>
+
+            <div class="muted">
+                ${escapeHTML(note.subject)} • ${note.date}
+            </div>
+
+            <p>${escapeHTML(note.text)}</p>
+
+            <button
+                class="btn secondary"
+                onclick="deleteNote(${note.id})">
+                🗑️ Excluir
+            </button>
+
+        </div>
+
+    `).join("");
 }
 
 
-/* =========================
+/* =====================================================
    QUESTÕES
-========================= */
+===================================================== */
 
-let currentSubject="";
+let currentQuiz=[];
 let currentQuestion=0;
+let answeredCurrent=false;
 
-function renderQuestions(){
-
-  const select=document.getElementById("questionSubject");
-
-  select.innerHTML=Object.keys(SUBJECTS).map(s=>
-    `<option value="${escapeHTML(s)}">${SUBJECTS[s].icon} ${escapeHTML(s)}</option>`
-  ).join("");
-
-  currentSubject=select.value;
-
-  showQuestion();
-}
 
 function startQuiz(){
 
-  currentSubject=document.getElementById("questionSubject").value;
-  currentQuestion=0;
+    const subject=
+        document.getElementById("quizSubject").value;
 
-  showQuestion();
+    if(!subject) return;
+
+    currentQuiz=SUBJECTS[subject].questions;
+    currentQuestion=0;
+    answeredCurrent=false;
+
+    showQuestion();
 }
+
 
 function showQuestion(){
 
-  const box=document.getElementById("questionBox");
+    const question=currentQuiz[currentQuestion];
 
-  if(!currentSubject){
-    box.innerHTML="<p>Escolha uma matéria.</p>";
-    return;
-  }
+    if(!question) return;
 
-  const list=SUBJECTS[currentSubject].questions;
+    document.getElementById("questionText").textContent=
+        question[0];
 
-  if(currentQuestion>=list.length){
-    box.innerHTML=`
-      <div class="quizFinished">
-        <h2>🎯 Quiz concluído!</h2>
-        <p>Você respondeu todas as questões desta matéria.</p>
-        <button onclick="startQuiz()">RECOMEÇAR</button>
-      </div>
-    `;
-    return;
-  }
+    const options=document.getElementById("options");
 
-  const q=list[currentQuestion];
+    options.innerHTML="";
 
-  box.innerHTML=`
-    <div class="quiz">
+    question[1].forEach((answer,index)=>{
 
-      <span class="questionNumber">
-        Questão ${currentQuestion+1}/${list.length}
-      </span>
+        const button=document.createElement("button");
 
-      <h2>${escapeHTML(q[0])}</h2>
+        button.className="option";
 
-      <div class="answers">
-        ${q[1].map((answer,i)=>`
-          <button onclick="answerQuestion(${i})">
-            ${String.fromCharCode(65+i)}) ${escapeHTML(answer)}
-          </button>
-        `).join("")}
-      </div>
+        button.textContent=answer;
 
-    </div>
-  `;
+        button.onclick=()=>{
+            answerQuestion(index);
+        };
+
+        options.appendChild(button);
+    });
+
+    document.getElementById("feedback").textContent="";
+
+    answeredCurrent=false;
 }
+
 
 function answerQuestion(index){
 
-  const q=SUBJECTS[currentSubject].questions[currentQuestion];
+    if(answeredCurrent) return;
 
-  db.answered++;
+    answeredCurrent=true;
 
-  if(index===q[2]){
-    db.correct++;
-    addXP(30,currentSubject);
-    markStudy();
+    const question=currentQuiz[currentQuestion];
 
-    alert("✅ Resposta correta! +30 XP");
-  }else{
-    alert("❌ Resposta incorreta.");
-  }
+    const buttons=
+        document.querySelectorAll(".option");
 
-  currentQuestion++;
+    db.answered++;
 
-  save();
-  updateAll();
-  showQuestion();
-}
+    if(index===question[2]){
 
+        db.correct++;
 
-/* =========================
-   CRONÔMETRO
-========================= */
+        buttons[index].classList.add("correct");
 
-let timerInterval=null;
-let timerSeconds=25*60;
-let timerRunning=false;
-let timerStartedMinutes=25;
+        document.getElementById("feedback").textContent=
+            "✅ Correto! +15 XP";
 
-function updateTimerDisplay(){
+        addXP(15);
 
-  const min=Math.floor(timerSeconds/60);
-  const sec=timerSeconds%60;
+    }else{
 
-  document.getElementById("timerDisplay").textContent=
-    String(min).padStart(2,"0")+":"+
-    String(sec).padStart(2,"0");
-}
+        buttons[index].classList.add("wrong");
 
-function startTimer(){
+        buttons[question[2]].classList.add("correct");
 
-  if(timerRunning) return;
+        document.getElementById("feedback").textContent=
+            "❌ Resposta incorreta.";
 
-  timerRunning=true;
-
-  timerInterval=setInterval(()=>{
-
-    timerSeconds--;
-
-    updateTimerDisplay();
-
-    if(timerSeconds<=0){
-      finishTimer();
     }
 
-  },1000);
-}
+    markStudy();
 
-function pauseTimer(){
+    save();
 
-  timerRunning=false;
-
-  clearInterval(timerInterval);
-}
-
-function resetTimer(){
-
-  pauseTimer();
-
-  const value=parseInt(
-    document.getElementById("timerMinutes").value
-  )||25;
-
-  timerStartedMinutes=value;
-  timerSeconds=value*60;
-
-  updateTimerDisplay();
-}
-
-function finishTimer(){
-
-  pauseTimer();
-
-  const minutes=timerStartedMinutes;
-
-  addXP(minutes*2);
-  markStudy(minutes);
-
-  alert(
-    "⏱️ Sessão concluída!\n\n+"+
-    (minutes*2)+" XP"
-  );
-
-  resetTimer();
+    updateAll();
 }
 
 
-/* =========================
+function nextQuestion(){
+
+    if(currentQuiz.length===0) return;
+
+    currentQuestion++;
+
+    if(currentQuestion>=currentQuiz.length)
+        currentQuestion=0;
+
+    showQuestion();
+}
+
+
+function renderQuestions(){
+
+    fillSubjectSelect("quizSubject");
+
+    const select=document.getElementById("quizSubject");
+
+    if(select && select.value)
+        startQuiz();
+}
+
+
+/* =====================================================
    CALENDÁRIO
-========================= */
-
-let calendarDate=new Date();
+===================================================== */
 
 function renderCalendar(){
 
-  const year=calendarDate.getFullYear();
-  const month=calendarDate.getMonth();
+    const container=
+        document.getElementById("calendarContent");
 
-  document.getElementById("calendarTitle").textContent=
-    new Intl.DateTimeFormat("pt-BR",{
-      month:"long",
-      year:"numeric"
-    }).format(calendarDate);
+    if(!container) return;
 
-  const first=new Date(year,month,1).getDay();
-  const days=new Date(year,month+1,0).getDate();
+    const now=new Date();
 
-  let html="";
+    const year=now.getFullYear();
+    const month=now.getMonth();
 
-  const names=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+    const months=[
+        "Janeiro","Fevereiro","Março","Abril",
+        "Maio","Junho","Julho","Agosto",
+        "Setembro","Outubro","Novembro","Dezembro"
+    ];
 
-  names.forEach(n=>{
-    html+=`<div class="calendarHead">${n}</div>`;
-  });
+    const firstDay=
+        new Date(year,month,1).getDay();
 
-  for(let i=0;i<first;i++){
-    html+=`<div class="calendarDay emptyDay"></div>`;
-  }
+    const totalDays=
+        new Date(year,month+1,0).getDate();
 
-  for(let d=1;d<=days;d++){
+    let html=`
 
-    const key=
-      year+"-"+
-      String(month+1).padStart(2,"0")+"-"+
-      String(d).padStart(2,"0");
+        <h2>
+            ${months[month]} ${year}
+        </h2>
 
-    const studied=db.studyDays[key];
+        <div class="calendar">
 
-    html+=`
-      <div class="calendarDay ${studied?"studied":""}">
-        <span>${d}</span>
-        ${studied?"✓":""}
-      </div>
+            <div class="day"><b>Dom</b></div>
+            <div class="day"><b>Seg</b></div>
+            <div class="day"><b>Ter</b></div>
+            <div class="day"><b>Qua</b></div>
+            <div class="day"><b>Qui</b></div>
+            <div class="day"><b>Sex</b></div>
+            <div class="day"><b>Sáb</b></div>
     `;
-  }
 
-  document.getElementById("calendarGrid").innerHTML=html;
+    for(let i=0;i<firstDay;i++){
+        html+="<div></div>";
+    }
+
+    for(let day=1;day<=totalDays;day++){
+
+        const date=
+            year+"-"+
+            String(month+1).padStart(2,"0")+"-"+
+            String(day).padStart(2,"0");
+
+        let classes="day";
+
+        if(date===today())
+            classes+=" today";
+
+        if(db.studyDays[date])
+            classes+=" studied";
+
+        html+=`
+
+            <div class="${classes}">
+
+                <b>${day}</b>
+
+                ${
+                    date===today()
+                    ? "<br>📍 Hoje"
+                    : ""
+                }
+
+                ${
+                    db.studyDays[date]
+                    ? "<br>✅ Estudou"
+                    : ""
+                }
+
+            </div>
+        `;
+    }
+
+    html+="</div>";
+
+    container.innerHTML=html;
 }
 
-function previousMonth(){
 
-  calendarDate.setMonth(calendarDate.getMonth()-1);
-  renderCalendar();
+/* =====================================================
+   GRÁFICOS
+===================================================== */
+
+function getLast7Days(){
+
+    const days=[];
+
+    for(let i=6;i>=0;i--){
+
+        const d=new Date();
+
+        d.setDate(d.getDate()-i);
+
+        const key=
+            d.getFullYear()+"-"+
+            String(d.getMonth()+1).padStart(2,"0")+"-"+
+            String(d.getDate()).padStart(2,"0");
+
+        days.push({
+            key:key,
+            label:String(d.getDate()),
+            minutes:db.dailyMinutes[key] || 0
+        });
+    }
+
+    return days;
 }
 
-function nextMonth(){
 
-  calendarDate.setMonth(calendarDate.getMonth()+1);
-  renderCalendar();
+function renderChart(id){
+
+    const container=document.getElementById(id);
+
+    if(!container) return;
+
+    const days=getLast7Days();
+
+    const max=Math.max(
+        1,
+        ...days.map(d=>d.minutes)
+    );
+
+    container.innerHTML=days.map(day=>`
+
+        <div class="bar-container">
+
+            <div class="small">
+                ${day.minutes}
+            </div>
+
+            <div
+                class="bar"
+                style="height:${Math.max(4,(day.minutes/max)*160)}px">
+            </div>
+
+            <div class="small">
+                ${day.label}
+            </div>
+
+        </div>
+
+    `).join("");
 }
 
 
-/* =========================
+/* =====================================================
    PROGRESSO
-========================= */
+===================================================== */
 
 function renderProgress(){
 
-  const accuracy=db.answered
-    ? Math.round((db.correct/db.answered)*100)
-    : 0;
+    document.getElementById("progressXP").textContent=
+        db.xp;
 
-  document.getElementById("progressXP").textContent=db.xp;
-  document.getElementById("progressLevel").textContent=db.level;
-  document.getElementById("progressStreak").textContent=db.streak;
-  document.getElementById("progressAccuracy").textContent=accuracy+"%";
+    document.getElementById("progressMinutes").textContent=
+        db.totalMinutes+" min";
 
-  renderChart();
+    document.getElementById("correct").textContent=
+        db.correct;
+
+    const accuracy=
+        db.answered===0
+        ? 0
+        : Math.round((db.correct/db.answered)*100);
+
+    document.getElementById("accuracy").textContent=
+        accuracy+"%";
+
+    renderChart("progressChart");
 }
 
-function renderChart(){
 
-  const canvas=document.getElementById("progressChart");
-
-  if(!canvas) return;
-
-  const ctx=canvas.getContext("2d");
-
-  const w=canvas.width=canvas.clientWidth*2;
-  const h=canvas.height=canvas.clientHeight*2;
-
-  ctx.clearRect(0,0,w,h);
-
-  const values=[];
-
-  for(let i=6;i>=0;i--){
-
-    const d=new Date();
-
-    d.setDate(d.getDate()-i);
-
-    const key=
-      d.getFullYear()+"-"+
-      String(d.getMonth()+1).padStart(2,"0")+"-"+
-      String(d.getDate()).padStart(2,"0");
-
-    values.push(db.dailyMinutes[key]||0);
-  }
-
-  const max=Math.max(...values,60);
-
-  ctx.beginPath();
-
-  values.forEach((v,i)=>{
-
-    const x=30+i*((w-60)/6);
-    const y=h-30-(v/max)*(h-60);
-
-    if(i===0) ctx.moveTo(x,y);
-    else ctx.lineTo(x,y);
-  });
-
-  ctx.lineWidth=6;
-  ctx.lineCap="round";
-  ctx.stroke();
-
-  values.forEach((v,i)=>{
-
-    const x=30+i*((w-60)/6);
-    const y=h-30-(v/max)*(h-60);
-
-    ctx.beginPath();
-    ctx.arc(x,y,7,0,Math.PI*2);
-    ctx.fill();
-  });
-}
- 
-/* =========================
+/* =====================================================
    CONQUISTAS
-========================= */
+===================================================== */
 
-</script>
+function renderAchievements(){
 
-<style>
-/* =========================
-   AJUSTES FINAIS DO STUDYUP
-========================= */
+    const list=
+        document.getElementById("achievementList");
 
-.page{
-  display:none;
-}
+    if(!list) return;
 
-.page.active{
-  display:block;
-}
+    const achievements=[
 
-.subjectDetail{
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:18px;
-  padding:22px;
-}
+        {
+            icon:"🌱",
+            name:"Primeiro passo",
+            desc:"Ganhe seu primeiro XP.",
+            unlocked:db.xp>=1
+        },
 
-.subjectDetail h2{
-  margin-top:0;
-}
+        {
+            icon:"🔥",
+            name:"Sequência",
+            desc:"Estude por 3 dias seguidos.",
+            unlocked:db.streak>=3
+        },
 
-.topicList{
-  display:grid;
-  gap:10px;
-}
+        {
+            icon:"⚡",
+            name:"100 XP",
+            desc:"Alcance 100 XP.",
+            unlocked:db.xp>=100
+        },
 
-.topicList button{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  width:100%;
-  padding:15px;
-  border:1px solid #273248;
-  background:#111827;
-  color:#fff;
-  border-radius:12px;
-  cursor:pointer;
-  text-align:left;
-}
+        {
+            icon:"📚",
+            name:"Estudante dedicado",
+            desc:"Estude por 60 minutos.",
+            unlocked:db.totalMinutes>=60
+        },
 
-.topicList button:hover{
-  border-color:#6d7cff;
-  transform:translateY(-1px);
-}
+        {
+            icon:"🧠",
+            name:"Conhecimento",
+            desc:"Responda 10 questões.",
+            unlocked:db.answered>=10
+        },
 
-.topicList button span{
-  width:32px;
-  height:32px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  background:#1e293b;
-}
+        {
+            icon:"🏆",
+            name:"Rank D",
+            desc:"Alcance Rank D.",
+            unlocked:db.xp>=100
+        },
 
-.topicList button b{
-  margin-left:auto;
-  color:#8ea0ff;
-}
+        {
+            icon:"👑",
+            name:"Rank S",
+            desc:"Alcance Rank S.",
+            unlocked:db.xp>=2000
+        }
 
-.task{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:14px;
-  padding:13px;
-  margin-bottom:10px;
-}
+    ];
 
-.task > button:first-child{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  border:0;
-  background:#172033;
-  color:#fff;
-  font-size:20px;
-  cursor:pointer;
-}
+    list.innerHTML=achievements.map(a=>`
 
-.taskInfo{
-  flex:1;
-}
+        <div class="achievement">
 
-.taskInfo b{
-  display:block;
-}
+            <div style="font-size:28px">
+                ${a.icon}
+            </div>
 
-.taskInfo small{
-  color:#8993a8;
-}
+            <b>
+                ${a.name}
+            </b>
 
-.task.done .taskInfo b{
-  text-decoration:line-through;
-  opacity:.5;
-}
+            <p class="muted">
+                ${a.desc}
+            </p>
 
-.delete{
-  border:0;
-  background:transparent;
-  cursor:pointer;
-  font-size:17px;
-}
+            ${
+                a.unlocked
+                ? "✅ Desbloqueada"
+                : "🔒 Bloqueada"
+            }
 
-.note{
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:12px;
-}
+        </div>
 
-.note h3{
-  margin:0 0 5px;
-}
-
-.note small{
-  color:#7f899c;
-}
-
-.note p{
-  white-space:pre-wrap;
-  line-height:1.5;
-}
-
-.note button{
-  border:0;
-  background:#24151a;
-  color:#ff8b9a;
-  padding:8px 12px;
-  border-radius:8px;
-  cursor:pointer;
-}
-
-.empty{
-  padding:30px;
-  text-align:center;
-  color:#737e93;
-  background:#0c111b;
-  border:1px dashed #273248;
-  border-radius:14px;
+    `).join("");
 }
 
 
-/* =========================
-   QUIZ
-========================= */
-
-.quiz{
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:18px;
-  padding:25px;
-}
-
-.questionNumber{
-  color:#8ea0ff;
-  font-weight:bold;
-}
-
-.quiz h2{
-  margin:20px 0;
-  line-height:1.4;
-}
-
-.answers{
-  display:grid;
-  gap:12px;
-}
-
-.answers button{
-  padding:15px;
-  text-align:left;
-  border-radius:12px;
-  border:1px solid #273248;
-  background:#111827;
-  color:#fff;
-  cursor:pointer;
-  font-size:15px;
-}
-
-.answers button:hover{
-  border-color:#7482ff;
-  background:#151d2d;
-}
-
-.quizFinished{
-  text-align:center;
-  padding:40px;
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:18px;
-}
-
-.quizFinished button{
-  margin-top:15px;
-}
-
-
-/* =========================
-   CALENDÁRIO
-========================= */
-
-.calendar{
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:18px;
-  padding:20px;
-}
-
-.calendarControls{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
-.calendarControls button{
-  width:42px;
-  height:42px;
-  border:1px solid #273248;
-  background:#111827;
-  color:#fff;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.calendarGrid{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:7px;
-}
-
-.calendarHead{
-  text-align:center;
-  color:#7f899c;
-  font-size:12px;
-  padding:7px 0;
-}
-
-.calendarDay{
-  min-height:55px;
-  border:1px solid #202a3d;
-  border-radius:10px;
-  background:#101622;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:3px;
-}
-
-.calendarDay.studied{
-  background:#15261f;
-  border-color:#2f9d69;
-  color:#7ff0b2;
-}
-
-.emptyDay{
-  visibility:hidden;
-}
-
-
-/* =========================
-   CONQUISTAS
-========================= */
-
-.achievement{
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:16px;
-  padding:20px;
-  text-align:center;
-  opacity:.45;
-  transition:.2s;
-}
-
-.achievement.unlocked{
-  opacity:1;
-  border-color:#6d7cff;
-  box-shadow:0 0 20px #6d7cff20;
-}
-
-.achievementIcon{
-  font-size:38px;
-  margin-bottom:10px;
-}
-
-.achievement h3{
-  margin:8px 0;
-}
-
-.achievement p{
-  color:#8b95a8;
-  font-size:13px;
-}
-
-.achievement span{
-  font-size:11px;
-  font-weight:bold;
-  color:#7f899c;
-}
-
-.achievement.unlocked span{
-  color:#7ff0b2;
-}
-
-
-/* =========================
-   MATÉRIAS
-========================= */
-
-.subjectCard{
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:17px;
-  padding:18px;
-  transition:.2s;
-}
-
-.subjectCard:hover{
-  transform:translateY(-3px);
-  border-color:#5365ff;
-}
-
-.subjectTop{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.subjectIcon{
-  font-size:31px;
-}
-
-.subjectTop h3{
-  margin:0;
-}
-
-.subjectTop span{
-  color:#7f899c;
-  font-size:12px;
-}
-
-.subjectTop > strong{
-  margin-left:auto;
-  width:42px;
-  height:42px;
-  display:grid;
-  place-items:center;
-  border-radius:12px;
-  font-size:20px;
-  background:#111827;
-}
-
-.rank-E{color:#94a3b8;}
-.rank-D{color:#60a5fa;}
-.rank-C{color:#4ade80;}
-.rank-B{color:#facc15;}
-.rank-A{color:#fb923c;}
-.rank-S{
-  color:#f472b6;
-  box-shadow:0 0 15px #f472b633;
-}
-
-.subjectStats{
-  display:flex;
-  justify-content:space-between;
-  margin:17px 0 8px;
-  color:#929db1;
-  font-size:13px;
-}
-
-.bar{
-  height:7px;
-  background:#182033;
-  border-radius:20px;
-  overflow:hidden;
-  margin-bottom:14px;
-}
-
-.bar i{
-  display:block;
-  height:100%;
-  background:#6675ff;
-  border-radius:20px;
-}
-
-.subjectCard button,
-.quizFinished button,
-.profileBox button,
-.goalBox button{
-  width:100%;
-  border:0;
-  border-radius:10px;
-  padding:12px;
-  background:#5365ff;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.subjectCard button:hover,
-.quizFinished button:hover,
-.profileBox button:hover,
-.goalBox button:hover{
-  background:#6575ff;
-}
-
-
-/* =========================
-   GRÁFICO
-========================= */
-
-.chartBox{
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:18px;
-  padding:20px;
-}
-
-#progressChart{
-  width:100%;
-  height:260px;
-  display:block;
-}
-
-
-/* =========================
+/* =====================================================
    PERFIL
-========================= */
+===================================================== */
 
-.profileBox{
-  max-width:650px;
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:18px;
-  padding:22px;
-}
+function renderProfile(){
 
-.profileAvatar{
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  background:#172033;
-  display:grid;
-  place-items:center;
-  font-size:40px;
-  margin-bottom:15px;
-}
+    const input=
+        document.getElementById("profileName");
 
-.profileBox input{
-  width:100%;
-  padding:13px;
-  border-radius:10px;
-  border:1px solid #273248;
-  background:#111827;
-  color:#fff;
-  outline:none;
-  margin:10px 0 15px;
+    if(input)
+        input.value=db.profileName || "Estudante";
 }
 
 
-/* =========================
-   BACKUP / METAS
-========================= */
+function saveProfile(){
 
-.settingsBox{
-  display:grid;
-  gap:15px;
-}
+    const input=
+        document.getElementById("profileName");
 
-.goalBox,
-.backupBox{
-  background:#0c111b;
-  border:1px solid #202a3d;
-  border-radius:16px;
-  padding:20px;
-}
+    db.profileName=
+        input.value.trim() || "Estudante";
 
-.goalBox input{
-  width:100%;
-  margin:7px 0 12px;
-  padding:12px;
-  background:#111827;
-  border:1px solid #273248;
-  border-radius:9px;
-  color:white;
-}
+    save();
 
-.backupBox button{
-  margin-top:8px;
-  padding:12px 16px;
-  border:0;
-  border-radius:10px;
-  background:#5365ff;
-  color:#fff;
-  cursor:pointer;
+    alert("✅ Perfil salvo!");
+
+    updateAll();
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+/* =====================================================
+   BACKUP
+===================================================== */
 
-@media(max-width:800px){
+function exportData(){
 
-  .side{
-    width:72px;
-    padding:12px 8px;
-  }
+    const data=JSON.stringify(db,null,2);
 
-  .logo{
-    font-size:0;
-    text-align:center;
-  }
+    const blob=new Blob(
+        [data],
+        {type:"application/json"}
+    );
 
-  .logo::after{
-    content:"S";
-    font-size:24px;
-  }
+    const url=URL.createObjectURL(blob);
 
-  .nav button{
-    justify-content:center;
-    padding:13px 5px;
-    font-size:0;
-  }
+    const a=document.createElement("a");
 
-  .nav button span{
-    font-size:20px;
-  }
+    a.href=url;
+    a.download="studyup-backup.json";
 
-  .main{
-    margin-left:72px;
-    padding:16px;
-  }
+    a.click();
 
-  .dashboard{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .subjectGrid{
-    grid-template-columns:1fr;
-  }
-
-  .achievementGrid{
-    grid-template-columns:1fr 1fr;
-  }
-
+    URL.revokeObjectURL(url);
 }
 
-@media(max-width:500px){
 
-  .dashboard{
-    grid-template-columns:1fr;
-  }
+function importData(event){
 
-  .achievementGrid{
-    grid-template-columns:1fr;
-  }
+    const file=event.target.files[0];
 
-  .calendarGrid{
-    gap:3px;
-  }
+    if(!file) return;
 
-  .calendarDay{
-    min-height:45px;
-    font-size:12px;
-  }
+    const reader=new FileReader();
 
-  .calendarHead{
-    font-size:10px;
-  }
+    reader.onload=function(){
 
-  .main{
-    padding:12px;
-  }
+        try{
 
+            const imported=
+                JSON.parse(reader.result);
+
+            db=imported;
+
+            save();
+
+            alert("✅ Backup importado!");
+
+            location.reload();
+
+        }catch(e){
+
+            alert("❌ Arquivo de backup inválido.");
+
+        }
+    };
+
+    reader.readAsText(file);
 }
-</style>
 
 
-<script>
+/* =====================================================
+   CRONÔMETRO
+===================================================== */
 
-/* =========================
-   GARANTIA DE CAMPOS
-========================= */
+let timerSeconds=25*60;
+let timerInterval=null;
+let timerRunning=false;
+
+
+function updateTimerDisplay(){
+
+    const minutes=
+        Math.floor(timerSeconds/60);
+
+    const seconds=
+        timerSeconds%60;
+
+    document.getElementById("timerDisplay").textContent=
+        String(minutes).padStart(2,"0")+":"+
+        String(seconds).padStart(2,"0");
+}
+
+
+function setTimer(minutes){
+
+    clearInterval(timerInterval);
+
+    timerRunning=false;
+
+    timerSeconds=minutes*60;
+
+    document.getElementById("timerButton").textContent=
+        "▶ Iniciar";
+
+    updateTimerDisplay();
+}
+
+
+function toggleTimer(){
+
+    if(timerRunning){
+
+        clearInterval(timerInterval);
+
+        timerRunning=false;
+
+        document.getElementById("timerButton").textContent=
+            "▶ Continuar";
+
+        return;
+    }
+
+    timerRunning=true;
+
+    document.getElementById("timerButton").textContent=
+        "⏸ Pausar";
+
+    timerInterval=setInterval(()=>{
+
+        timerSeconds--;
+
+        updateTimerDisplay();
+
+        if(timerSeconds<=0){
+
+            clearInterval(timerInterval);
+
+            timerRunning=false;
+
+            timerSeconds=0;
+
+            document.getElementById("timerButton").textContent=
+                "▶ Iniciar";
+
+            markStudy(25);
+
+            addXP(25);
+
+            alert(
+                "⏱️ Cronômetro concluído!\n\n"+
+                "+25 minutos\n"+
+                "+25 XP"
+            );
+
+            setTimer(25);
+        }
+
+    },1000);
+}
+
+
+function resetTimer(){
+
+    clearInterval(timerInterval);
+
+    timerRunning=false;
+    timerSeconds=25*60;
+
+    const button=
+        document.getElementById("timerButton");
+
+    if(button)
+        button.textContent="▶ Iniciar";
+
+    updateTimerDisplay();
+}
+
+
+/* =====================================================
+   ATUALIZAÇÃO GERAL
+===================================================== */
+
+function updateAll(){
+
+    renderHome();
+    renderTasks();
+    renderSubjects();
+    renderNotes();
+    renderProgress();
+    renderAchievements();
+
+    document.getElementById("level").textContent=
+        db.level;
+}
+
+
+/* =====================================================
+   INICIALIZAÇÃO
+===================================================== */
 
 document.addEventListener("DOMContentLoaded",()=>{
 
-  const daily=document.getElementById("dailyGoalInput");
-  const weekly=document.getElementById("weeklyGoalInput");
+    fillSubjectSelect("taskSubject");
+    fillSubjectSelect("noteSubject");
+    fillSubjectSelect("quizSubject");
 
-  if(daily) daily.value=db.dailyGoal;
-  if(weekly) weekly.value=db.weeklyGoal;
+    renderHome();
+    renderTasks();
+    renderSubjects();
+    renderNotes();
+    renderQuestions();
+    renderCalendar();
+    renderProgress();
+    renderAchievements();
+    renderProfile();
+    resetTimer();
 
-  updateAll();
-
-});
-
-
-/* =========================
-   AUTO SALVAMENTO
-========================= */
-
-setInterval(()=>{
-  save();
-},5000);
-
-
-/* =========================
-   TECLA ENTER NAS TAREFAS
-========================= */
-
-document.addEventListener("keydown",e=>{
-
-  if(e.key==="Enter"){
-
-    const input=document.getElementById("taskInput");
-
-    if(document.activeElement===input){
-      addTask();
-    }
-
-  }
-
-});
-
-
-/* =========================
-   LIMPEZA DE TIMER
-========================= */
-
-window.addEventListener("beforeunload",()=>{
-  clearInterval(timerInterval);
-  save();
 });
 
 </script>
