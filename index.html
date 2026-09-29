@@ -2,446 +2,352 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>StudyUp — Meus Estudos</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>StudyUp V2</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{
+    box-sizing:border-box;
 }
 
-:root {
-    --bg: #0b0f16;
-    --card: #121925;
-    --card2: #182131;
-    --text: #f4f7fb;
-    --muted: #8f9bad;
-    --accent: #6c63ff;
-    --accent2: #8b84ff;
-    --green: #38d39f;
-    --red: #ff5d6c;
-    --border: #263144;
+body{
+    margin:0;
+    background:#070a10;
+    color:#eef2ff;
+    font-family:Arial,sans-serif;
 }
 
-body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
+.app{
+    display:flex;
+    min-height:100vh;
 }
 
-button,
-input,
-textarea,
-select {
-    font: inherit;
+.side{
+    width:240px;
+    background:#0c1018;
+    border-right:1px solid #20283a;
+    padding:18px;
+    position:fixed;
+    inset:0 auto 0 0;
+    overflow:auto;
 }
 
-button {
-    cursor: pointer;
-    border: 0;
+.logo{
+    font-size:25px;
+    font-weight:900;
+    margin:4px 8px 22px;
 }
 
-.app {
-    display: flex;
-    min-height: 100vh;
+.logo b{
+    color:#7c5cff;
 }
 
-.sidebar {
-    width: 245px;
-    background: #0e141e;
-    border-right: 1px solid var(--border);
-    padding: 22px 14px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-}
-
-.logo {
-    font-size: 24px;
-    font-weight: 800;
-    padding: 4px 12px 25px;
-}
-
-.logo span {
-    color: var(--accent);
-}
-
-.nav button {
-    display: block;
-    width: 100%;
-    padding: 13px 14px;
-    margin: 5px 0;
-    background: transparent;
-    color: var(--muted);
-    text-align: left;
-    border-radius: 10px;
+.nav button{
+    width:100%;
+    padding:12px;
+    margin:4px 0;
+    border:0;
+    border-radius:10px;
+    background:transparent;
+    color:#8e99ad;
+    text-align:left;
+    cursor:pointer;
 }
 
 .nav button:hover,
-.nav button.active {
-    background: var(--card2);
-    color: #fff;
+.nav button.active{
+    background:#171d2a;
+    color:white;
 }
 
-.main {
-    margin-left: 245px;
-    width: calc(100% - 245px);
-    padding: 28px;
-    max-width: 1400px;
+.main{
+    margin-left:240px;
+    width:calc(100% - 240px);
+    padding:25px;
 }
 
-.top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 24px;
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
 }
 
-h1 {
-    margin: 0;
-    font-size: 30px;
+.card{
+    background:#111722;
+    border:1px solid #20283a;
+    border-radius:16px;
+    padding:18px;
 }
 
-.subtitle {
-    color: var(--muted);
-    margin-top: 7px;
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
 }
 
-.page {
-    display: none;
+.two{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
 }
 
-.page.active {
-    display: block;
+.three{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
+.stat{
+    font-size:30px;
+    font-weight:bold;
+    margin-top:8px;
 }
 
-.card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 18px;
+.muted{
+    color:#8994a8;
 }
 
-.stat {
-    font-size: 28px;
-    font-weight: 800;
-    margin-top: 7px;
+.btn{
+    background:#705cff;
+    color:white;
+    border:0;
+    border-radius:10px;
+    padding:10px 15px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-.label {
-    color: var(--muted);
-    font-size: 13px;
+.btn:hover{
+    background:#826fff;
 }
 
-.icon {
-    font-size: 21px;
+.btn.secondary{
+    background:#171e2b;
+    border:1px solid #293247;
 }
 
-.two {
-    display: grid;
-    grid-template-columns: 1.2fr .8fr;
-    gap: 18px;
+input,
+textarea,
+select{
+    width:100%;
+    padding:11px;
+    border-radius:10px;
+    border:1px solid #293247;
+    background:#090d14;
+    color:white;
 }
 
-.section-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
+textarea{
+    min-height:120px;
+    resize:vertical;
 }
 
-.section-title h2 {
-    font-size: 18px;
-    margin: 0;
+label{
+    display:block;
+    margin:9px 0 5px;
+    color:#9aa5b8;
 }
 
-.primary {
-    background: var(--accent);
-    color: white;
-    padding: 11px 16px;
-    border-radius: 10px;
-    font-weight: 700;
+.progress{
+    height:9px;
+    background:#252d3d;
+    border-radius:20px;
+    overflow:hidden;
 }
 
-.primary:hover {
-    background: var(--accent2);
+.progress div{
+    height:100%;
+    background:#705cff;
 }
 
-.secondary {
-    background: var(--card2);
-    color: #fff;
-    padding: 10px 14px;
-    border-radius: 10px;
+.subject{
+    background:#151b27;
+    border:1px solid #293247;
+    border-radius:14px;
+    padding:16px;
 }
 
-.input {
-    width: 100%;
-    background: #0d131d;
-    color: #fff;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px;
-    outline: none;
+.rank{
+    font-size:25px;
+    font-weight:900;
 }
 
-.input:focus {
-    border-color: var(--accent);
+.rank-S{color:#ffcc4d}
+.rank-A{color:#ff6577}
+.rank-B{color:#a87cff}
+.rank-C{color:#5ea7ff}
+.rank-D{color:#5ce0a0}
+.rank-E{color:#a0a8b8}
+
+.task,
+.note,
+.reminder,
+.achievement{
+    background:#151b27;
+    border-radius:11px;
+    padding:12px;
+    margin:8px 0;
 }
 
-textarea.input {
-    min-height: 180px;
-    resize: vertical;
+.task{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.row {
-    display: flex;
-    gap: 10px;
+.task-name{
+    flex:1;
 }
 
-.row > * {
-    flex: 1;
+.done .task-name{
+    text-decoration:line-through;
+    color:#7f899b;
 }
 
-.task {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 13px 0;
-    border-bottom: 1px solid var(--border);
+.page{
+    display:block;
 }
 
-.task:last-child {
-    border-bottom: 0;
+.hidden{
+    display:none!important;
 }
 
-.task input {
-    width: 19px;
-    height: 19px;
-    accent-color: var(--accent);
+.timer{
+    text-align:center;
 }
 
-.task.done .task-name {
-    text-decoration: line-through;
-    color: var(--muted);
+.timer-display{
+    font-size:70px;
+    font-weight:900;
+    margin:20px;
 }
 
-.badge {
-    font-size: 11px;
-    padding: 5px 8px;
-    border-radius: 20px;
-    background: #242d3e;
-    color: #bfc7d8;
-    margin-left: auto;
+.options{
+    display:grid;
+    gap:10px;
 }
 
-.progress {
-    height: 10px;
-    background: #242d3e;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-top: 12px;
+.option{
+    padding:13px;
+    background:#151b27;
+    color:white;
+    border:1px solid #293247;
+    border-radius:10px;
+    text-align:left;
+    cursor:pointer;
 }
 
-.progress div {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 20px;
-    transition: .3s;
+.option:hover{
+    border-color:#705cff;
 }
 
-.subjects {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+.calendar{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:5px;
 }
 
-.subject {
-    padding: 16px;
-    border: 1px solid var(--border);
-    border-radius: 13px;
-    background: #101722;
+.day{
+    min-height:65px;
+    padding:8px;
+    background:#151b27;
+    border-radius:8px;
 }
 
-.subject h3 {
-    margin: 0 0 8px;
+.day.today{
+    outline:2px solid #705cff;
 }
 
-.subject p {
-    margin: 0;
-    color: var(--muted);
-    font-size: 13px;
+.day.studied{
+    background:#123323;
 }
 
-.actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
+.chart{
+    display:flex;
+    height:200px;
+    align-items:end;
+    gap:10px;
 }
 
-.danger {
-    color: #ff7c87;
-    background: #321b22;
+.bar{
+    flex:1;
+    background:#705cff;
+    border-radius:6px 6px 0 0;
+    min-height:4px;
 }
 
-.timer {
-    text-align: center;
-    padding: 20px;
+.modal{
+    position:fixed;
+    inset:0;
+    background:#000b;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:10;
 }
 
-.time {
-    font-size: 65px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    margin: 15px 0;
+.modal-box{
+    background:#111722;
+    border:1px solid #293247;
+    border-radius:16px;
+    max-width:650px;
+    width:100%;
+    max-height:85vh;
+    overflow:auto;
+    padding:20px;
 }
 
-.timer select {
-    max-width: 230px;
-}
+@media(max-width:950px){
 
-.xpbar {
-    height: 12px;
-    background: #242d3e;
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 8px 0 16px;
-}
-
-.xpbar div {
-    height: 100%;
-    background: var(--green);
-    transition: .3s;
-}
-
-.notes-list {
-    display: grid;
-    gap: 12px;
-}
-
-.note {
-    border: 1px solid var(--border);
-    background: #101722;
-    border-radius: 12px;
-    padding: 15px;
-}
-
-.note small {
-    color: var(--muted);
-}
-
-.empty {
-    color: var(--muted);
-    padding: 20px;
-    text-align: center;
-}
-
-.toast {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    background: #fff;
-    color: #111;
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-weight: 700;
-    display: none;
-    z-index: 10;
-}
-
-.modal {
-    position: fixed;
-    inset: 0;
-    background: #0009;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    z-index: 5;
-}
-
-.modal-box {
-    width: min(520px, 100%);
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 20px;
-}
-
-.close {
-    float: right;
-    background: none;
-    color: #aaa;
-    font-size: 22px;
-}
-
-@media (max-width: 900px) {
-    .sidebar {
-        width: 72px;
-        padding: 14px 8px;
+    .grid{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .logo {
-        font-size: 0;
-        text-align: center;
-    }
-
-    .logo span {
-        font-size: 24px;
-    }
-
-    .nav button {
-        font-size: 0;
-        text-align: center;
-    }
-
-    .nav button::first-letter {
-        font-size: 20px;
-    }
-
-    .main {
-        margin-left: 72px;
-        width: calc(100% - 72px);
-        padding: 18px;
-    }
-
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .two {
-        grid-template-columns: 1fr;
-    }
-
-    .subjects {
-        grid-template-columns: 1fr 1fr;
+    .three{
+        grid-template-columns:1fr 1fr;
     }
 }
 
-@media (max-width: 560px) {
+@media(max-width:700px){
+
+    .app{
+        display:block;
+    }
+
+    .side{
+        position:static;
+        width:100%;
+        border-right:0;
+        border-bottom:1px solid #20283a;
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+        padding:15px;
+    }
+
+    .nav{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:4px;
+    }
+
+    .nav button{
+        font-size:12px;
+    }
+
     .grid,
-    .subjects {
-        grid-template-columns: 1fr;
+    .two,
+    .three{
+        grid-template-columns:1fr;
     }
 
-    .top {
-        align-items: flex-start;
-    }
-
-    .time {
-        font-size: 48px;
-    }
-
-    .row {
-        flex-direction: column;
+    .timer-display{
+        font-size:50px;
     }
 }
 </style>
@@ -451,163 +357,186 @@ textarea.input {
 
 <div class="app">
 
-<aside class="sidebar">
+<aside class="side">
 
 <div class="logo">
-    Study<span>Up</span>
+Study<b>Up</b> ⚔️
 </div>
 
-<nav class="nav">
+<div class="nav">
 
-<button class="active" onclick="showPage('home',this)">
+<button class="active" onclick="showPage('home')">
 🏠 Início
 </button>
 
-<button onclick="showPage('tasks',this)">
+<button onclick="showPage('tasks')">
 ✅ Tarefas
 </button>
 
-<button onclick="showPage('subjects',this)">
+<button onclick="showPage('subjects')">
 📚 Matérias
 </button>
 
-<button onclick="showPage('timer',this)">
+<button onclick="showPage('timer')">
 ⏱️ Cronômetro
 </button>
 
-<button onclick="showPage('notes',this)">
+<button onclick="showPage('notes')">
 📝 Anotações
 </button>
 
-<button onclick="showPage('progress',this)">
+<button onclick="showPage('questions')">
+❓ Questões
+</button>
+
+<button onclick="showPage('calendar')">
+📅 Calendário
+</button>
+
+<button onclick="showPage('progress')">
 📊 Progresso
 </button>
 
-</nav>
+<button onclick="showPage('achievements')">
+🏆 Conquistas
+</button>
+
+<button onclick="showPage('profile')">
+👤 Perfil
+</button>
+
+</div>
 
 </aside>
 
-
 <main class="main">
-
-<!-- INÍCIO -->
-
-<section id="home" class="page active">
 
 <div class="top">
 
 <div>
-<h1>Olá! 👋</h1>
-<div class="subtitle">
-Hora de estudar e evoluir.
-</div>
-</div>
+<h1 id="title">
+StudyUp
+</h1>
 
-<button class="primary" onclick="openTask()">
-+ Nova tarefa
-</button>
-
+<p id="subtitle">
+Seu sistema de estudos.
+</p>
 </div>
 
+<div class="card">
+⚡ Nível <b id="level">1</b>
+</div>
+
+</div>
+
+<!-- INÍCIO -->
+
+<section id="home" class="page">
 
 <div class="grid">
 
 <div class="card">
-<div class="icon">🔥</div>
+<span class="muted">🔥 Sequência</span>
 <div class="stat" id="streak">0</div>
-<div class="label">dias de sequência</div>
 </div>
 
 <div class="card">
-<div class="icon">⭐</div>
-<div class="stat" id="xp">0 XP</div>
-<div class="label">experiência total</div>
+<span class="muted">⚡ XP</span>
+<div class="stat" id="xp">0</div>
 </div>
 
 <div class="card">
-<div class="icon">✅</div>
-<div class="stat" id="done">0</div>
-<div class="label">tarefas concluídas</div>
+<span class="muted">⏱️ Hoje</span>
+<div class="stat" id="todayMinutes">0</div>
 </div>
 
 <div class="card">
-<div class="icon">⏱️</div>
-<div class="stat" id="minutes">0 min</div>
-<div class="label">tempo estudado</div>
+<span class="muted">🎯 Meta</span>
+<div class="stat" id="goalPercent">0%</div>
 </div>
 
 </div>
 
+<br>
 
 <div class="two">
 
 <div class="card">
 
-<div class="section-title">
+<h2>🎯 Meta diária</h2>
 
-<h2>Tarefas de hoje</h2>
+<p id="dailyText">
+0 / 60 minutos
+</p>
 
-<button class="secondary"
-onclick="showPage('tasks',document.querySelectorAll('.nav button')[1])">
-Ver todas
+<div class="progress">
+<div id="dailyBar" style="width:0%"></div>
+</div>
+
+<br>
+
+<h2>📅 Meta semanal</h2>
+
+<p id="weeklyText">
+0 / 300 minutos
+</p>
+
+<div class="progress">
+<div id="weeklyBar" style="width:0%"></div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📌 Tarefas</h2>
+
+<div id="homeTasks"></div>
+
+<button class="btn" onclick="showPage('tasks')">
+Ver tarefas
 </button>
 
 </div>
 
-<div id="homeTasks"></div>
-
 </div>
 
+<br>
 
 <div class="card">
 
-<div class="section-title">
-<h2>Seu nível</h2>
-</div>
+<h2>📈 Últimos 7 dias</h2>
 
-<div style="font-size:26px;font-weight:800" id="level">
-Nível 1
-</div>
-
-<div class="label" id="nextXP">
-100 XP para o próximo nível
-</div>
-
-<div class="xpbar">
-<div id="xpFill"></div>
-</div>
-
-<div class="label">
-Continue estudando para ganhar XP.
-</div>
-
-</div>
+<div class="chart" id="homeChart"></div>
 
 </div>
 
 </section>
 
-
 <!-- TAREFAS -->
 
-<section id="tasks" class="page">
-
-<div class="top">
-
-<div>
-<h1>Tarefas</h1>
-<div class="subtitle">
-Organize o que precisa estudar.
-</div>
-</div>
-
-<button class="primary" onclick="openTask()">
-+ Nova tarefa
-</button>
-
-</div>
+<section id="tasks" class="page hidden">
 
 <div class="card">
+
+<h2>✅ Tarefas</h2>
+
+<label>Tarefa</label>
+
+<input
+id="taskInput"
+placeholder="Ex.: estudar matemática"
+>
+
+<label>Matéria</label>
+
+<select id="taskSubject"></select>
+
+<br><br>
+
+<button class="btn" onclick="addTask()">
+Adicionar tarefa
+</button>
 
 <div id="taskList"></div>
 
@@ -615,251 +544,238 @@ Organize o que precisa estudar.
 
 </section>
 
-
 <!-- MATÉRIAS -->
 
-<section id="subjects" class="page">
+<section id="subjects" class="page hidden">
 
-<div class="top">
+<div class="card">
 
-<div>
-<h1>Matérias</h1>
+<h2>⚔️ Sistema de Matérias</h2>
 
-<div class="subtitle">
-Escolha uma matéria e mantenha o foco.
-</div>
-
-</div>
+<p class="muted">
+Estude, ganhe XP e aumente o rank de cada matéria.
+</p>
 
 </div>
 
-<div class="subjects" id="subjectList"></div>
+<br>
+
+<div class="three" id="subjectList"></div>
 
 </section>
-
 
 <!-- CRONÔMETRO -->
 
-<section id="timer" class="page">
-
-<div class="top">
-
-<div>
-<h1>Cronômetro</h1>
-
-<div class="subtitle">
-Estude com foco e registre seu tempo.
-</div>
-
-</div>
-
-</div>
-
+<section id="timer" class="page hidden">
 
 <div class="card timer">
 
-<select
-class="input"
-id="timerSelect"
-onchange="setTimer()">
+<h2>⏱️ Cronômetro</h2>
 
-<option value="25">
-Pomodoro — 25 min
-</option>
-
-<option value="45">
-Foco — 45 min
-</option>
-
-<option value="60">
-Estudo — 60 min
-</option>
-
-<option value="5">
-Teste — 5 min
-</option>
-
-</select>
-
-
-<div class="time" id="clock">
+<div class="timer-display" id="timerDisplay">
 25:00
 </div>
 
+<button class="btn secondary" onclick="setTimer(25)">
+25 min
+</button>
 
-<div class="actions" style="justify-content:center">
+<button class="btn secondary" onclick="setTimer(45)">
+45 min
+</button>
 
-<button
-class="primary"
-id="startBtn"
-onclick="toggleTimer()">
+<button class="btn secondary" onclick="setTimer(60)">
+60 min
+</button>
 
+<br><br>
+
+<button class="btn" id="timerButton" onclick="toggleTimer()">
 ▶ Iniciar
-
 </button>
 
-<button
-class="secondary"
-onclick="resetTimer()">
-
-↺ Reiniciar
-
+<button class="btn secondary" onclick="resetTimer()">
+↻ Resetar
 </button>
-
-</div>
 
 </div>
 
 </section>
-
 
 <!-- ANOTAÇÕES -->
 
-<section id="notes" class="page">
+<section id="notes" class="page hidden">
 
-<div class="top">
+<div class="card">
 
-<div>
+<h2>📝 Anotações</h2>
 
-<h1>Anotações</h1>
+<label>Título</label>
 
-<div class="subtitle">
-Guarde seus resumos e ideias.
+<input
+id="noteTitle"
+placeholder="Título da anotação"
+>
+
+<label>Matéria</label>
+
+<select id="noteSubject"></select>
+
+<label>Texto</label>
+
+<textarea
+id="noteText"
+placeholder="Escreva aqui..."
+></textarea>
+
+<br><br>
+
+<button class="btn" onclick="addNote()">
+Salvar
+</button>
+
+<div id="noteList"></div>
+
 </div>
 
-</div>
+</section>
 
-<button class="primary" onclick="saveNote()">
-Salvar anotação
+<!-- QUESTÕES -->
+
+<section id="questions" class="page hidden">
+
+<div class="card">
+
+<h2>❓ Questões</h2>
+
+<label>Matéria</label>
+
+<select id="quizSubject" onchange="startQuiz()"></select>
+
+<h3 id="questionText">
+Questão
+</h3>
+
+<div id="options" class="options"></div>
+
+<p id="feedback"></p>
+
+<button class="btn secondary" onclick="nextQuestion()">
+Próxima →
 </button>
 
 </div>
 
+</section>
 
-<div class="card" style="margin-bottom:18px">
+<!-- CALENDÁRIO -->
 
-<div class="row">
+<section id="calendar" class="page hidden">
 
-<input
-id="noteTitle"
-class="input"
-placeholder="Título da anotação">
+<div class="card">
 
-<select
-id="noteSubject"
-class="input">
-</select>
+<h2>📅 Calendário</h2>
+
+<div id="calendar"></div>
 
 </div>
-
-
-<textarea
-id="noteText"
-class="input"
-style="margin-top:10px"
-placeholder="Escreva aqui o que você aprendeu...">
-</textarea>
-
-</div>
-
-
-<div class="notes-list" id="notesList"></div>
 
 </section>
 
-
 <!-- PROGRESSO -->
 
-<section id="progress" class="page">
-
-<div class="top">
-
-<div>
-
-<h1>Meu progresso</h1>
-
-<div class="subtitle">
-Veja sua evolução.
-</div>
-
-</div>
-
-</div>
-
+<section id="progress" class="page hidden">
 
 <div class="grid">
 
 <div class="card">
-
-<div class="label">
-XP
+<span class="muted">XP</span>
+<div class="stat" id="progressXP">0</div>
 </div>
 
-<div class="stat" id="pXP">
-0
+<div class="card">
+<span class="muted">Tempo total</span>
+<div class="stat" id="progressMinutes">0</div>
+</div>
+
+<div class="card">
+<span class="muted">Questões certas</span>
+<div class="stat" id="correct">0</div>
+</div>
+
+<div class="card">
+<span class="muted">Precisão</span>
+<div class="stat" id="accuracy">0%</div>
 </div>
 
 </div>
 
+<br>
 
 <div class="card">
 
-<div class="label">
-Nível
-</div>
+<h2>📊 Seu progresso</h2>
 
-<div class="stat" id="pLevel">
-1
-</div>
+<div class="chart" id="progressChart"></div>
 
 </div>
 
+</section>
+
+<!-- CONQUISTAS -->
+
+<section id="achievements" class="page hidden">
 
 <div class="card">
 
-<div class="label">
-Tarefas
-</div>
+<h2>🏆 Conquistas</h2>
 
-<div class="stat" id="pDone">
-0
-</div>
+<div id="achievementList"></div>
 
 </div>
 
+</section>
+
+<!-- PERFIL -->
+
+<section id="profile" class="page hidden">
+
+<div class="two">
 
 <div class="card">
 
-<div class="label">
-Tempo
-</div>
+<h2>👤 Perfil</h2>
 
-<div class="stat" id="pMinutes">
-0 min
-</div>
+<label>Nome</label>
+
+<input id="profileName">
+
+<br><br>
+
+<button class="btn" onclick="saveProfile()">
+Salvar perfil
+</button>
 
 </div>
-
-</div>
-
 
 <div class="card">
 
-<h2>
-Meta de estudo
-</h2>
+<h2>💾 Backup</h2>
 
-<div class="label">
-Meta diária: 60 minutos
+<button class="btn" onclick="exportData()">
+⬇ Exportar dados
+</button>
+
+<br><br>
+
+<input
+type="file"
+id="importFile"
+accept=".json"
+onchange="importData(event)"
+>
+
 </div>
-
-<div class="progress">
-
-<div id="dailyFill"></div>
-
-</div>
-
-<p id="dailyText" class="label"></p>
 
 </div>
 
@@ -869,824 +785,1547 @@ Meta diária: 60 minutos
 
 </div>
 
+<script>
+/* =========================
+   STUDYUP V2 — SISTEMA
+========================= */
 
-<!-- MODAL DE TAREFA -->
+const SUBJECTS = {
+  "Matemática": {
+    icon:"📐",
+    topics:["Números","Álgebra","Equações","Geometria","Funções","Probabilidade"],
+    questions:[
+      ["Quanto é 12 × 8?",["86","96","108","88"],1],
+      ["Qual é o resultado de 25 + 37?",["52","62","72","57"],1],
+      ["Quanto é 144 ÷ 12?",["10","11","12","14"],2]
+    ]
+  },
 
-<div class="modal" id="taskModal">
+  "Português": {
+    icon:"📚",
+    topics:["Gramática","Interpretação","Literatura","Ortografia","Redação"],
+    questions:[
+      ["Qual é um substantivo?",["correr","bonito","casa","rapidamente"],2],
+      ["Qual palavra está escrita corretamente?",["excessão","exceção","eseção","excessão"],1],
+      ["O que é um verbo?",["Uma ação ou estado","Um objeto","Uma qualidade","Um número"],0]
+    ]
+  },
 
-<div class="modal-box">
+  "História": {
+    icon:"🏛️",
+    topics:["Antiguidade","Idade Média","Brasil","Revoluções","Século XX"],
+    questions:[
+      ["Em que ano começou a Segunda Guerra Mundial?",["1914","1939","1945","1964"],1],
+      ["Quem chegou ao Brasil em 1500?",["Cristóvão Colombo","Pedro Álvares Cabral","Vasco da Gama","Napoleão"],1],
+      ["Qual civilização construiu as pirâmides de Gizé?",["Romana","Egípcia","Grega","Maia"],1]
+    ]
+  },
 
-<button class="close" onclick="closeTask()">
-×
-</button>
+  "Geografia": {
+    icon:"🌎",
+    topics:["Relevo","Clima","População","Economia","Cartografia","Geopolítica"],
+    questions:[
+      ["Qual é o maior país da América do Sul?",["Argentina","Brasil","Chile","Peru"],1],
+      ["Qual é o maior oceano do planeta?",["Atlântico","Índico","Pacífico","Ártico"],2],
+      ["O que é latitude?",["Distância em relação ao Equador","Altura de uma montanha","Distância entre cidades","Profundidade"],0]
+    ]
+  },
 
-<h2>
-Nova tarefa
-</h2>
+  "Ciências": {
+    icon:"🔬",
+    topics:["Corpo Humano","Ecologia","Matéria","Energia","Sistema Solar"],
+    questions:[
+      ["Qual órgão bombeia o sangue?",["Pulmão","Cérebro","Coração","Fígado"],2],
+      ["Qual planeta é conhecido como planeta vermelho?",["Vênus","Marte","Júpiter","Saturno"],1],
+      ["Qual gás é essencial para a respiração humana?",["Oxigênio","Hélio","Neônio","Hidrogênio"],0]
+    ]
+  },
+
+  "Inglês": {
+    icon:"🇺🇸",
+    topics:["Vocabulário","Gramática","Verbos","Tempos Verbais","Conversação"],
+    questions:[
+      ["O que significa 'book'?",["Caneta","Livro","Mesa","Escola"],1],
+      ["Qual é o passado de 'go'?",["goed","going","went","gone"],2],
+      ["'Good morning' significa:",["Boa noite","Bom dia","Boa tarde","Até logo"],1]
+    ]
+  },
+
+  "Química": {
+    icon:"⚗️",
+    topics:["Átomos","Elementos","Tabela Periódica","Reações","Química Orgânica"],
+    questions:[
+      ["Qual é o símbolo químico da água?",["CO₂","H₂O","O₂","NaCl"],1],
+      ["Qual partícula possui carga negativa?",["Próton","Nêutron","Elétron","Núcleo"],2],
+      ["Qual é o símbolo do oxigênio?",["O","Ox","Og","X"],0]
+    ]
+  },
+
+  "Física": {
+    icon:"⚡",
+    topics:["Movimento","Força","Energia","Eletricidade","Ondas","Gravidade"],
+    questions:[
+      ["Qual é a unidade de força?",["Watt","Newton","Joule","Volt"],1],
+      ["Qual é aproximadamente a velocidade da luz?",["300 km/s","3.000 km/s","300.000 km/s","30.000 km/s"],2],
+      ["Qual força atrai objetos para a Terra?",["Atrito","Gravidade","Magnetismo","Pressão"],1]
+    ]
+  },
+
+  "Biologia": {
+    icon:"🧬",
+    topics:["Célula","Genética","Ecologia","Evolução","Anatomia"],
+    questions:[
+      ["Qual é a unidade básica da vida?",["Átomo","Célula","Tecido","Órgão"],1],
+      ["Qual molécula contém a informação genética?",["DNA","Água","Glicose","ATP"],0],
+      ["Qual organela produz grande parte do ATP?",["Núcleo","Mitocôndria","Ribossomo","Lisossomo"],1]
+    ]
+  },
+
+  "Filosofia": {
+    icon:"🧠",
+    topics:["Sócrates","Platão","Aristóteles","Ética","Conhecimento"],
+    questions:[
+      ["Quem foi discípulo de Sócrates?",["Platão","Aristóteles","Descartes","Kant"],0],
+      ["A filosofia busca principalmente:",["Memorizar fatos","Investigar questões fundamentais","Fazer cálculos","Estudar mapas"],1]
+    ]
+  },
+
+  "Sociologia": {
+    icon:"👥",
+    topics:["Sociedade","Cultura","Política","Desigualdade","Instituições"],
+    questions:[
+      ["O que a Sociologia estuda principalmente?",["A sociedade","Os planetas","Os átomos","As plantas"],0],
+      ["Cultura pode incluir:",["Costumes e valores","Somente dinheiro","Somente leis","Somente tecnologia"],0]
+    ]
+  },
+
+  "Artes": {
+    icon:"🎨",
+    topics:["Pintura","Música","Teatro","Dança","Cinema"],
+    questions:[
+      ["Qual destas é uma linguagem artística?",["Pintura","Álgebra","Geometria","Química"],0],
+      ["O teatro utiliza principalmente:",["Representação cênica","Cálculos","Mapas","Experimentos químicos"],0]
+    ]
+  },
+
+  "Espanhol": {
+    icon:"🇪🇸",
+    topics:["Vocabulário","Gramática","Verbos","Conversação"],
+    questions:[
+      ["O que significa 'hola'?",["Adeus","Olá","Obrigado","Por favor"],1],
+      ["'Gracias' significa:",["Obrigado","Desculpa","Olá","Sim"],0]
+    ]
+  },
+
+  "Tecnologia": {
+    icon:"💻",
+    topics:["Computadores","Internet","Programação","IA","Segurança Digital"],
+    questions:[
+      ["HTML é usado principalmente para:",["Estruturar páginas web","Editar vídeos","Criar músicas","Montar computadores"],0],
+      ["CSS é usado principalmente para:",["Estilizar páginas","Criar bancos","Navegar na internet","Proteger arquivos"],0],
+      ["JavaScript é uma:",["Linguagem de programação","Placa de vídeo","Rede social","Sistema operacional"],0]
+    ]
+  },
+
+  "Educação Financeira": {
+    icon:"💰",
+    topics:["Dinheiro","Orçamento","Poupança","Investimentos","Consumo"],
+    questions:[
+      ["O que é orçamento?",["Planejamento de receitas e despesas","Um tipo de imposto","Uma conta bancária","Um cartão"],0],
+      ["Poupar significa:",["Guardar parte do dinheiro","Gastar tudo","Pedir dinheiro","Fazer dívida"],0]
+    ]
+  }
+};
 
 
-<input
-id="taskName"
-class="input"
-placeholder="Ex.: Estudar frações">
+/* =========================
+   BANCO DE DADOS
+========================= */
+
+const defaultDB = {
+  xp:0,
+  level:1,
+  streak:0,
+  lastStudy:"",
+  totalMinutes:0,
+  answered:0,
+  correct:0,
+  tasks:[],
+  notes:[],
+  studyDays:{},
+  dailyMinutes:{},
+  subjectXP:{},
+  subjectTopics:{},
+  dailyGoal:60,
+  weeklyGoal:300,
+  profileName:"Estudante"
+};
+
+let db;
+
+try {
+  db = JSON.parse(localStorage.getItem("studyup_v2")) || defaultDB;
+} catch(e) {
+  db = defaultDB;
+}
+
+function save(){
+  localStorage.setItem("studyup_v2",JSON.stringify(db));
+}
 
 
-<select
-id="taskSubject"
-class="input"
-style="margin-top:10px">
-</select>
+/* =========================
+   UTILIDADES
+========================= */
+
+function today(){
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
+function escapeHTML(text){
+  return String(text)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function addXP(amount,subject=null){
+  db.xp += amount;
+
+  if(subject){
+    if(!db.subjectXP[subject]) db.subjectXP[subject]=0;
+    db.subjectXP[subject]+=amount;
+  }
+
+  db.level = Math.floor(db.xp/100)+1;
+  save();
+  updateAll();
+}
+
+function markStudy(minutes=0){
+  const t=today();
+
+  if(!db.studyDays[t]){
+    db.studyDays[t]=true;
+
+    if(db.lastStudy){
+      const old=new Date(db.lastStudy+"T00:00:00");
+      const now=new Date(t+"T00:00:00");
+      const diff=Math.round((now-old)/86400000);
+
+      if(diff===1) db.streak++;
+      else if(diff>1) db.streak=1;
+    }else{
+      db.streak=1;
+    }
+
+    db.lastStudy=t;
+  }
+
+  if(minutes>0){
+    db.totalMinutes+=minutes;
+
+    if(!db.dailyMinutes[t])
+      db.dailyMinutes[t]=0;
+
+    db.dailyMinutes[t]+=minutes;
+  }
+
+  save();
+  updateAll();
+}
+
+function getRank(xp){
+  if(xp>=2000) return "S";
+  if(xp>=1000) return "A";
+  if(xp>=500) return "B";
+  if(xp>=250) return "C";
+  if(xp>=100) return "D";
+  return "E";
+}
+
+function rankClass(rank){
+  return "rank-"+rank;
+}
 
 
-<div class="actions">
+/* =========================
+   NAVEGAÇÃO
+========================= */
 
-<button class="primary" onclick="addTask()">
-Adicionar
-</button>
+function showPage(id){
 
-<button class="secondary" onclick="closeTask()">
-Cancelar
-</button>
+  document.querySelectorAll(".page").forEach(p=>{
+    p.classList.remove("active");
+  });
 
-</div>
+  const page=document.getElementById(id);
 
-</div>
+  if(page) page.classList.add("active");
 
-</div>
+  document.querySelectorAll(".nav button").forEach(b=>{
+    b.classList.remove("selected");
+
+    if(b.dataset.page===id)
+      b.classList.add("selected");
+  });
+
+  if(id==="home") renderHome();
+  if(id==="tasks") renderTasks();
+  if(id==="subjects") renderSubjects();
+  if(id==="questions") renderQuestions();
+  if(id==="calendar") renderCalendar();
+  if(id==="progress") renderProgress();
+  if(id==="achievements") renderAchievements();
+  if(id==="profile") renderProfile();
+}
 
 
-<div class="toast" id="toast"></div>
+/* =========================
+   INÍCIO
+========================= */
+
+function renderHome(){
+
+  const name=escapeHTML(db.profileName || "Estudante");
+
+  document.getElementById("welcome").innerHTML=
+    `Olá, <b>${name}</b>. Pronto para evoluir?`;
+
+  document.getElementById("homeXP").textContent=db.xp+" XP";
+  document.getElementById("homeLevel").textContent="Nível "+db.level;
+  document.getElementById("homeStreak").textContent=db.streak+" dias";
+  document.getElementById("homeMinutes").textContent=db.totalMinutes+" min";
+
+  const todayMinutes=db.dailyMinutes[today()]||0;
+
+  const pct=Math.min(100,Math.round(todayMinutes/db.dailyGoal*100));
+
+  document.getElementById("dailyBar").style.width=pct+"%";
+  document.getElementById("dailyText").textContent=
+    todayMinutes+" / "+db.dailyGoal+" minutos";
+}
+
+
+/* =========================
+   TAREFAS
+========================= */
+
+function addTask(){
+
+  const input=document.getElementById("taskInput");
+  const subject=document.getElementById("taskSubject");
+
+  const title=input.value.trim();
+
+  if(!title) return;
+
+  db.tasks.push({
+    id:Date.now(),
+    title:title,
+    subject:subject.value,
+    done:false,
+    date:today()
+  });
+
+  input.value="";
+
+  save();
+  renderTasks();
+  updateAll();
+}
+
+function toggleTask(id){
+
+  const task=db.tasks.find(t=>t.id===id);
+
+  if(!task) return;
+
+  task.done=!task.done;
+
+  if(task.done){
+    addXP(25,task.subject);
+    markStudy();
+  }else{
+    db.xp=Math.max(0,db.xp-25);
+
+    if(task.subject){
+      db.subjectXP[task.subject]=Math.max(
+        0,
+        (db.subjectXP[task.subject]||0)-25
+      );
+    }
+
+    save();
+  }
+
+  renderTasks();
+  updateAll();
+}
+
+function deleteTask(id){
+
+  db.tasks=db.tasks.filter(t=>t.id!==id);
+
+  save();
+  renderTasks();
+}
+
+function renderTasks(){
+
+  const box=document.getElementById("taskList");
+
+  if(!db.tasks.length){
+    box.innerHTML=
+      `<div class="empty">Nenhuma tarefa cadastrada.</div>`;
+    return;
+  }
+
+  box.innerHTML=db.tasks.map(t=>`
+    <div class="task ${t.done?"done":""}">
+      <button onclick="toggleTask(${t.id})">
+        ${t.done?"✓":"○"}
+      </button>
+
+      <div class="taskInfo">
+        <b>${escapeHTML(t.title)}</b>
+        <small>${escapeHTML(t.subject||"Geral")}</small>
+      </div>
+
+      <button class="delete" onclick="deleteTask(${t.id})">
+        🗑️
+      </button>
+    </div>
+  `).join("");
+}
+
+
+/* =========================
+   MATÉRIAS
+========================= */
+
+function renderSubjects(){
+
+  const box=document.getElementById("subjectGrid");
+
+  box.innerHTML=Object.entries(SUBJECTS).map(([name,data])=>{
+
+    const xp=db.subjectXP[name]||0;
+    const rank=getRank(xp);
+    const level=Math.floor(xp/100)+1;
+
+    const progress=xp%100;
+
+    return `
+      <div class="subjectCard">
+
+        <div class="subjectTop">
+          <span class="subjectIcon">${data.icon}</span>
+
+          <div>
+            <h3>${name}</h3>
+            <span>${data.topics.length} conteúdos</span>
+          </div>
+
+          <strong class="${rankClass(rank)}">${rank}</strong>
+        </div>
+
+        <div class="subjectStats">
+          <span>Nível ${level}</span>
+          <span>${xp} XP</span>
+        </div>
+
+        <div class="bar">
+          <i style="width:${progress}%"></i>
+        </div>
+
+        <button onclick="openSubject('${name.replaceAll("'","\\'")}')">
+          ESTUDAR
+        </button>
+
+      </div>
+    `;
+  }).join("");
+}
+
+function openSubject(name){
+
+  const data=SUBJECTS[name];
+
+  document.getElementById("subjectTitle").textContent=
+    data.icon+" "+name;
+
+  document.getElementById("subjectContent").innerHTML=`
+    <div class="subjectDetail">
+
+      <h2>Conteúdos</h2>
+
+      <div class="topicList">
+        ${data.topics.map((topic,i)=>`
+          <button onclick="completeTopic('${name.replaceAll("'","\\'")}',${i})">
+            <span>${i+1}</span>
+            ${topic}
+            <b>+20 XP</b>
+          </button>
+        `).join("")}
+      </div>
+
+      <h2>Sobre a matéria</h2>
+
+      <p>
+        Estude cada conteúdo com atenção, faça exercícios
+        e revise os pontos em que teve dificuldade.
+      </p>
+
+    </div>
+  `;
+
+  showPage("subject");
+}
+
+function completeTopic(name,index){
+
+  if(!db.subjectTopics[name])
+    db.subjectTopics[name]=[];
+
+  if(db.subjectTopics[name].includes(index)){
+    alert("Você já concluiu este conteúdo.");
+    return;
+  }
+
+  db.subjectTopics[name].push(index);
+
+  addXP(20,name);
+  markStudy();
+
+  alert("Conteúdo concluído! +20 XP");
+
+  openSubject(name);
+}
+
+
+/* =========================
+   NOTAS
+========================= */
+
+function addNote(){
+
+  const title=document.getElementById("noteTitle").value.trim();
+  const text=document.getElementById("noteText").value.trim();
+
+  if(!text) return;
+
+  db.notes.push({
+    id:Date.now(),
+    title:title||"Anotação",
+    text:text,
+    date:new Date().toLocaleDateString("pt-BR")
+  });
+
+  document.getElementById("noteTitle").value="";
+  document.getElementById("noteText").value="";
+
+  save();
+  renderNotes();
+}
+
+function deleteNote(id){
+
+  db.notes=db.notes.filter(n=>n.id!==id);
+
+  save();
+  renderNotes();
+}
+
+function renderNotes(){
+
+  const box=document.getElementById("notesList");
+
+  if(!db.notes.length){
+    box.innerHTML=
+      `<div class="empty">Nenhuma anotação.</div>`;
+    return;
+  }
+
+  box.innerHTML=db.notes.map(n=>`
+    <div class="note">
+      <div>
+        <h3>${escapeHTML(n.title)}</h3>
+        <small>${n.date}</small>
+      </div>
+
+      <p>${escapeHTML(n.text)}</p>
+
+      <button onclick="deleteNote(${n.id})">Excluir</button>
+    </div>
+  `).join("");
+}
+
+
+/* =========================
+   QUESTÕES
+========================= */
+
+let currentSubject="";
+let currentQuestion=0;
+
+function renderQuestions(){
+
+  const select=document.getElementById("questionSubject");
+
+  select.innerHTML=Object.keys(SUBJECTS).map(s=>
+    `<option value="${escapeHTML(s)}">${SUBJECTS[s].icon} ${escapeHTML(s)}</option>`
+  ).join("");
+
+  currentSubject=select.value;
+
+  showQuestion();
+}
+
+function startQuiz(){
+
+  currentSubject=document.getElementById("questionSubject").value;
+  currentQuestion=0;
+
+  showQuestion();
+}
+
+function showQuestion(){
+
+  const box=document.getElementById("questionBox");
+
+  if(!currentSubject){
+    box.innerHTML="<p>Escolha uma matéria.</p>";
+    return;
+  }
+
+  const list=SUBJECTS[currentSubject].questions;
+
+  if(currentQuestion>=list.length){
+    box.innerHTML=`
+      <div class="quizFinished">
+        <h2>🎯 Quiz concluído!</h2>
+        <p>Você respondeu todas as questões desta matéria.</p>
+        <button onclick="startQuiz()">RECOMEÇAR</button>
+      </div>
+    `;
+    return;
+  }
+
+  const q=list[currentQuestion];
+
+  box.innerHTML=`
+    <div class="quiz">
+
+      <span class="questionNumber">
+        Questão ${currentQuestion+1}/${list.length}
+      </span>
+
+      <h2>${escapeHTML(q[0])}</h2>
+
+      <div class="answers">
+        ${q[1].map((answer,i)=>`
+          <button onclick="answerQuestion(${i})">
+            ${String.fromCharCode(65+i)}) ${escapeHTML(answer)}
+          </button>
+        `).join("")}
+      </div>
+
+    </div>
+  `;
+}
+
+function answerQuestion(index){
+
+  const q=SUBJECTS[currentSubject].questions[currentQuestion];
+
+  db.answered++;
+
+  if(index===q[2]){
+    db.correct++;
+    addXP(30,currentSubject);
+    markStudy();
+
+    alert("✅ Resposta correta! +30 XP");
+  }else{
+    alert("❌ Resposta incorreta.");
+  }
+
+  currentQuestion++;
+
+  save();
+  updateAll();
+  showQuestion();
+}
+
+
+/* =========================
+   CRONÔMETRO
+========================= */
+
+let timerInterval=null;
+let timerSeconds=25*60;
+let timerRunning=false;
+let timerStartedMinutes=25;
+
+function updateTimerDisplay(){
+
+  const min=Math.floor(timerSeconds/60);
+  const sec=timerSeconds%60;
+
+  document.getElementById("timerDisplay").textContent=
+    String(min).padStart(2,"0")+":"+
+    String(sec).padStart(2,"0");
+}
+
+function startTimer(){
+
+  if(timerRunning) return;
+
+  timerRunning=true;
+
+  timerInterval=setInterval(()=>{
+
+    timerSeconds--;
+
+    updateTimerDisplay();
+
+    if(timerSeconds<=0){
+      finishTimer();
+    }
+
+  },1000);
+}
+
+function pauseTimer(){
+
+  timerRunning=false;
+
+  clearInterval(timerInterval);
+}
+
+function resetTimer(){
+
+  pauseTimer();
+
+  const value=parseInt(
+    document.getElementById("timerMinutes").value
+  )||25;
+
+  timerStartedMinutes=value;
+  timerSeconds=value*60;
+
+  updateTimerDisplay();
+}
+
+function finishTimer(){
+
+  pauseTimer();
+
+  const minutes=timerStartedMinutes;
+
+  addXP(minutes*2);
+  markStudy(minutes);
+
+  alert(
+    "⏱️ Sessão concluída!\n\n+"+
+    (minutes*2)+" XP"
+  );
+
+  resetTimer();
+}
+
+
+/* =========================
+   CALENDÁRIO
+========================= */
+
+let calendarDate=new Date();
+
+function renderCalendar(){
+
+  const year=calendarDate.getFullYear();
+  const month=calendarDate.getMonth();
+
+  document.getElementById("calendarTitle").textContent=
+    new Intl.DateTimeFormat("pt-BR",{
+      month:"long",
+      year:"numeric"
+    }).format(calendarDate);
+
+  const first=new Date(year,month,1).getDay();
+  const days=new Date(year,month+1,0).getDate();
+
+  let html="";
+
+  const names=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+
+  names.forEach(n=>{
+    html+=`<div class="calendarHead">${n}</div>`;
+  });
+
+  for(let i=0;i<first;i++){
+    html+=`<div class="calendarDay emptyDay"></div>`;
+  }
+
+  for(let d=1;d<=days;d++){
+
+    const key=
+      year+"-"+
+      String(month+1).padStart(2,"0")+"-"+
+      String(d).padStart(2,"0");
+
+    const studied=db.studyDays[key];
+
+    html+=`
+      <div class="calendarDay ${studied?"studied":""}">
+        <span>${d}</span>
+        ${studied?"✓":""}
+      </div>
+    `;
+  }
+
+  document.getElementById("calendarGrid").innerHTML=html;
+}
+
+function previousMonth(){
+
+  calendarDate.setMonth(calendarDate.getMonth()-1);
+  renderCalendar();
+}
+
+function nextMonth(){
+
+  calendarDate.setMonth(calendarDate.getMonth()+1);
+  renderCalendar();
+}
+
+
+/* =========================
+   PROGRESSO
+========================= */
+
+function renderProgress(){
+
+  const accuracy=db.answered
+    ? Math.round((db.correct/db.answered)*100)
+    : 0;
+
+  document.getElementById("progressXP").textContent=db.xp;
+  document.getElementById("progressLevel").textContent=db.level;
+  document.getElementById("progressStreak").textContent=db.streak;
+  document.getElementById("progressAccuracy").textContent=accuracy+"%";
+
+  renderChart();
+}
+
+function renderChart(){
+
+  const canvas=document.getElementById("progressChart");
+
+  if(!canvas) return;
+
+  const ctx=canvas.getContext("2d");
+
+  const w=canvas.width=canvas.clientWidth*2;
+  const h=canvas.height=canvas.clientHeight*2;
+
+  ctx.clearRect(0,0,w,h);
+
+  const values=[];
+
+  for(let i=6;i>=0;i--){
+
+    const d=new Date();
+
+    d.setDate(d.getDate()-i);
+
+    const key=
+      d.getFullYear()+"-"+
+      String(d.getMonth()+1).padStart(2,"0")+"-"+
+      String(d.getDate()).padStart(2,"0");
+
+    values.push(db.dailyMinutes[key]||0);
+  }
+
+  const max=Math.max(...values,60);
+
+  ctx.beginPath();
+
+  values.forEach((v,i)=>{
+
+    const x=30+i*((w-60)/6);
+    const y=h-30-(v/max)*(h-60);
+
+    if(i===0) ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+  });
+
+  ctx.lineWidth=6;
+  ctx.lineCap="round";
+  ctx.stroke();
+
+  values.forEach((v,i)=>{
+
+    const x=30+i*((w-60)/6);
+    const y=h-30-(v/max)*(h-60);
+
+    ctx.beginPath();
+    ctx.arc(x,y,7,0,Math.PI*2);
+    ctx.fill();
+  });
+}
+ 
+/* =========================
+   CONQUISTAS
+========================= */
+
+</script>
+
+<style>
+/* =========================
+   AJUSTES FINAIS DO STUDYUP
+========================= */
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.subjectDetail{
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:18px;
+  padding:22px;
+}
+
+.subjectDetail h2{
+  margin-top:0;
+}
+
+.topicList{
+  display:grid;
+  gap:10px;
+}
+
+.topicList button{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:15px;
+  border:1px solid #273248;
+  background:#111827;
+  color:#fff;
+  border-radius:12px;
+  cursor:pointer;
+  text-align:left;
+}
+
+.topicList button:hover{
+  border-color:#6d7cff;
+  transform:translateY(-1px);
+}
+
+.topicList button span{
+  width:32px;
+  height:32px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#1e293b;
+}
+
+.topicList button b{
+  margin-left:auto;
+  color:#8ea0ff;
+}
+
+.task{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:14px;
+  padding:13px;
+  margin-bottom:10px;
+}
+
+.task > button:first-child{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:0;
+  background:#172033;
+  color:#fff;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.taskInfo{
+  flex:1;
+}
+
+.taskInfo b{
+  display:block;
+}
+
+.taskInfo small{
+  color:#8993a8;
+}
+
+.task.done .taskInfo b{
+  text-decoration:line-through;
+  opacity:.5;
+}
+
+.delete{
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  font-size:17px;
+}
+
+.note{
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:12px;
+}
+
+.note h3{
+  margin:0 0 5px;
+}
+
+.note small{
+  color:#7f899c;
+}
+
+.note p{
+  white-space:pre-wrap;
+  line-height:1.5;
+}
+
+.note button{
+  border:0;
+  background:#24151a;
+  color:#ff8b9a;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.empty{
+  padding:30px;
+  text-align:center;
+  color:#737e93;
+  background:#0c111b;
+  border:1px dashed #273248;
+  border-radius:14px;
+}
+
+
+/* =========================
+   QUIZ
+========================= */
+
+.quiz{
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:18px;
+  padding:25px;
+}
+
+.questionNumber{
+  color:#8ea0ff;
+  font-weight:bold;
+}
+
+.quiz h2{
+  margin:20px 0;
+  line-height:1.4;
+}
+
+.answers{
+  display:grid;
+  gap:12px;
+}
+
+.answers button{
+  padding:15px;
+  text-align:left;
+  border-radius:12px;
+  border:1px solid #273248;
+  background:#111827;
+  color:#fff;
+  cursor:pointer;
+  font-size:15px;
+}
+
+.answers button:hover{
+  border-color:#7482ff;
+  background:#151d2d;
+}
+
+.quizFinished{
+  text-align:center;
+  padding:40px;
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:18px;
+}
+
+.quizFinished button{
+  margin-top:15px;
+}
+
+
+/* =========================
+   CALENDÁRIO
+========================= */
+
+.calendar{
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:18px;
+  padding:20px;
+}
+
+.calendarControls{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.calendarControls button{
+  width:42px;
+  height:42px;
+  border:1px solid #273248;
+  background:#111827;
+  color:#fff;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.calendarGrid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:7px;
+}
+
+.calendarHead{
+  text-align:center;
+  color:#7f899c;
+  font-size:12px;
+  padding:7px 0;
+}
+
+.calendarDay{
+  min-height:55px;
+  border:1px solid #202a3d;
+  border-radius:10px;
+  background:#101622;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:3px;
+}
+
+.calendarDay.studied{
+  background:#15261f;
+  border-color:#2f9d69;
+  color:#7ff0b2;
+}
+
+.emptyDay{
+  visibility:hidden;
+}
+
+
+/* =========================
+   CONQUISTAS
+========================= */
+
+.achievement{
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:16px;
+  padding:20px;
+  text-align:center;
+  opacity:.45;
+  transition:.2s;
+}
+
+.achievement.unlocked{
+  opacity:1;
+  border-color:#6d7cff;
+  box-shadow:0 0 20px #6d7cff20;
+}
+
+.achievementIcon{
+  font-size:38px;
+  margin-bottom:10px;
+}
+
+.achievement h3{
+  margin:8px 0;
+}
+
+.achievement p{
+  color:#8b95a8;
+  font-size:13px;
+}
+
+.achievement span{
+  font-size:11px;
+  font-weight:bold;
+  color:#7f899c;
+}
+
+.achievement.unlocked span{
+  color:#7ff0b2;
+}
+
+
+/* =========================
+   MATÉRIAS
+========================= */
+
+.subjectCard{
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:17px;
+  padding:18px;
+  transition:.2s;
+}
+
+.subjectCard:hover{
+  transform:translateY(-3px);
+  border-color:#5365ff;
+}
+
+.subjectTop{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.subjectIcon{
+  font-size:31px;
+}
+
+.subjectTop h3{
+  margin:0;
+}
+
+.subjectTop span{
+  color:#7f899c;
+  font-size:12px;
+}
+
+.subjectTop > strong{
+  margin-left:auto;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  font-size:20px;
+  background:#111827;
+}
+
+.rank-E{color:#94a3b8;}
+.rank-D{color:#60a5fa;}
+.rank-C{color:#4ade80;}
+.rank-B{color:#facc15;}
+.rank-A{color:#fb923c;}
+.rank-S{
+  color:#f472b6;
+  box-shadow:0 0 15px #f472b633;
+}
+
+.subjectStats{
+  display:flex;
+  justify-content:space-between;
+  margin:17px 0 8px;
+  color:#929db1;
+  font-size:13px;
+}
+
+.bar{
+  height:7px;
+  background:#182033;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:14px;
+}
+
+.bar i{
+  display:block;
+  height:100%;
+  background:#6675ff;
+  border-radius:20px;
+}
+
+.subjectCard button,
+.quizFinished button,
+.profileBox button,
+.goalBox button{
+  width:100%;
+  border:0;
+  border-radius:10px;
+  padding:12px;
+  background:#5365ff;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.subjectCard button:hover,
+.quizFinished button:hover,
+.profileBox button:hover,
+.goalBox button:hover{
+  background:#6575ff;
+}
+
+
+/* =========================
+   GRÁFICO
+========================= */
+
+.chartBox{
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:18px;
+  padding:20px;
+}
+
+#progressChart{
+  width:100%;
+  height:260px;
+  display:block;
+}
+
+
+/* =========================
+   PERFIL
+========================= */
+
+.profileBox{
+  max-width:650px;
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:18px;
+  padding:22px;
+}
+
+.profileAvatar{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  background:#172033;
+  display:grid;
+  place-items:center;
+  font-size:40px;
+  margin-bottom:15px;
+}
+
+.profileBox input{
+  width:100%;
+  padding:13px;
+  border-radius:10px;
+  border:1px solid #273248;
+  background:#111827;
+  color:#fff;
+  outline:none;
+  margin:10px 0 15px;
+}
+
+
+/* =========================
+   BACKUP / METAS
+========================= */
+
+.settingsBox{
+  display:grid;
+  gap:15px;
+}
+
+.goalBox,
+.backupBox{
+  background:#0c111b;
+  border:1px solid #202a3d;
+  border-radius:16px;
+  padding:20px;
+}
+
+.goalBox input{
+  width:100%;
+  margin:7px 0 12px;
+  padding:12px;
+  background:#111827;
+  border:1px solid #273248;
+  border-radius:9px;
+  color:white;
+}
+
+.backupBox button{
+  margin-top:8px;
+  padding:12px 16px;
+  border:0;
+  border-radius:10px;
+  background:#5365ff;
+  color:#fff;
+  cursor:pointer;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:800px){
+
+  .side{
+    width:72px;
+    padding:12px 8px;
+  }
+
+  .logo{
+    font-size:0;
+    text-align:center;
+  }
+
+  .logo::after{
+    content:"S";
+    font-size:24px;
+  }
+
+  .nav button{
+    justify-content:center;
+    padding:13px 5px;
+    font-size:0;
+  }
+
+  .nav button span{
+    font-size:20px;
+  }
+
+  .main{
+    margin-left:72px;
+    padding:16px;
+  }
+
+  .dashboard{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .subjectGrid{
+    grid-template-columns:1fr;
+  }
+
+  .achievementGrid{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+@media(max-width:500px){
+
+  .dashboard{
+    grid-template-columns:1fr;
+  }
+
+  .achievementGrid{
+    grid-template-columns:1fr;
+  }
+
+  .calendarGrid{
+    gap:3px;
+  }
+
+  .calendarDay{
+    min-height:45px;
+    font-size:12px;
+  }
+
+  .calendarHead{
+    font-size:10px;
+  }
+
+  .main{
+    padding:12px;
+  }
+
+}
+</style>
 
 
 <script>
 
-const defaultSubjects = [
+/* =========================
+   GARANTIA DE CAMPOS
+========================= */
 
-{
-name:"Matemática",
-icon:"➗",
-desc:"Cálculos, problemas e lógica."
-},
+document.addEventListener("DOMContentLoaded",()=>{
 
-{
-name:"Português",
-icon:"📖",
-desc:"Gramática, leitura e redação."
-},
+  const daily=document.getElementById("dailyGoalInput");
+  const weekly=document.getElementById("weeklyGoalInput");
 
-{
-name:"História",
-icon:"🏛️",
-desc:"Eventos, povos e acontecimentos."
-},
+  if(daily) daily.value=db.dailyGoal;
+  if(weekly) weekly.value=db.weeklyGoal;
 
-{
-name:"Geografia",
-icon:"🌎",
-desc:"Espaço, mapas e sociedade."
-},
-
-{
-name:"Ciências",
-icon:"🔬",
-desc:"Natureza, corpo e universo."
-},
-
-{
-name:"Inglês",
-icon:"🇺🇸",
-desc:"Vocabulário e compreensão."
-}
-
-];
-
-
-let data =
-JSON.parse(localStorage.getItem("studyup"))
-||
-{
-tasks:[],
-notes:[],
-xp:0,
-minutes:0,
-lastDay:null,
-streak:0
-};
-
-
-let timerSec = 1500;
-
-let timerRunning = false;
-
-let timerInt = null;
-
-
-
-function save() {
-
-localStorage.setItem(
-"studyup",
-JSON.stringify(data)
-);
-
-render();
-
-}
-
-
-
-function showPage(id,btn) {
-
-document
-.querySelectorAll(".page")
-.forEach(p => p.classList.remove("active"));
-
-document
-.getElementById(id)
-.classList.add("active");
-
-
-document
-.querySelectorAll(".nav button")
-.forEach(b => b.classList.remove("active"));
-
-if(btn) {
-btn.classList.add("active");
-}
-
-}
-
-
-
-function populateSubjects() {
-
-const opts =
-defaultSubjects
-.map(s => `<option>${s.name}</option>`)
-.join("");
-
-document.getElementById("taskSubject").innerHTML = opts;
-
-document.getElementById("noteSubject").innerHTML = opts;
-
-}
-
-
-
-function openTask() {
-
-document.getElementById("taskModal").style.display = "flex";
-
-document.getElementById("taskName").focus();
-
-}
-
-
-
-function closeTask() {
-
-document.getElementById("taskModal").style.display = "none";
-
-document.getElementById("taskName").value = "";
-
-}
-
-
-
-function addTask() {
-
-const name =
-document.getElementById("taskName").value.trim();
-
-const subject =
-document.getElementById("taskSubject").value;
-
-
-if(!name) {
-
-toast("Digite uma tarefa.");
-
-return;
-
-}
-
-
-data.tasks.push({
-
-id:Date.now(),
-
-name,
-
-subject,
-
-done:false
+  updateAll();
 
 });
 
 
-data.xp += 5;
+/* =========================
+   AUTO SALVAMENTO
+========================= */
 
-closeTask();
+setInterval(()=>{
+  save();
+},5000);
 
-save();
 
-toast("Tarefa adicionada! +5 XP");
+/* =========================
+   TECLA ENTER NAS TAREFAS
+========================= */
 
-}
+document.addEventListener("keydown",e=>{
 
+  if(e.key==="Enter"){
 
+    const input=document.getElementById("taskInput");
 
-function toggleTask(id) {
+    if(document.activeElement===input){
+      addTask();
+    }
 
-const t =
-data.tasks.find(x => x.id === id);
-
-if(!t) return;
-
-
-t.done = !t.done;
-
-
-if(t.done) {
-
-data.xp += 20;
-
-updateStreak();
-
-toast("Tarefa concluída! +20 XP");
-
-}
-
-else {
-
-data.xp =
-Math.max(0,data.xp - 20);
-
-}
-
-
-save();
-
-}
-
-
-
-function removeTask(id) {
-
-data.tasks =
-data.tasks.filter(x => x.id !== id);
-
-save();
-
-toast("Tarefa removida.");
-
-}
-
-
-
-function taskHTML(t) {
-
-return `
-
-<div class="task ${t.done ? "done" : ""}">
-
-<input
-type="checkbox"
-${t.done ? "checked" : ""}
-onchange="toggleTask(${t.id})">
-
-<span class="task-name">
-${escapeHTML(t.name)}
-</span>
-
-<span class="badge">
-${escapeHTML(t.subject)}
-</span>
-
-<button
-class="secondary danger"
-onclick="removeTask(${t.id})">
-×
-</button>
-
-</div>
-
-`;
-
-}
-
-
-
-function renderTasks() {
-
-const html =
-data.tasks.length
-
-?
-
-data.tasks.map(taskHTML).join("")
-
-:
-
-`<div class="empty">
-Nenhuma tarefa ainda. Crie sua primeira!
-</div>`;
-
-
-document.getElementById("taskList").innerHTML = html;
-
-
-const today =
-data.tasks
-.filter(t => !t.done)
-.slice(0,5);
-
-
-document.getElementById("homeTasks").innerHTML =
-
-today.length
-
-?
-
-today.map(taskHTML).join("")
-
-:
-
-`<div class="empty">
-Tudo limpo por aqui. 🎉
-</div>`;
-
-}
-
-
-
-function updateStreak() {
-
-const today =
-new Date().toISOString().slice(0,10);
-
-
-if(data.lastDay === today)
-return;
-
-
-const yesterday =
-new Date(Date.now() - 86400000)
-.toISOString()
-.slice(0,10);
-
-
-data.streak =
-data.lastDay === yesterday
-
-?
-
-data.streak + 1
-
-:
-
-1;
-
-
-data.lastDay = today;
-
-}
-
-
-
-function saveNote() {
-
-const title =
-document.getElementById("noteTitle")
-.value.trim();
-
-
-const text =
-document.getElementById("noteText")
-.value.trim();
-
-
-const subject =
-document.getElementById("noteSubject")
-.value;
-
-
-if(!title || !text) {
-
-toast("Preencha o título e a anotação.");
-
-return;
-
-}
-
-
-data.notes.unshift({
-
-id:Date.now(),
-
-title,
-
-text,
-
-subject,
-
-date:new Date().toLocaleDateString("pt-BR")
+  }
 
 });
 
 
-data.xp += 10;
-
-
-document.getElementById("noteTitle").value = "";
-
-document.getElementById("noteText").value = "";
-
-
-save();
-
-toast("Anotação salva! +10 XP");
-
-}
-
-
-
-function renderNotes() {
-
-document.getElementById("notesList").innerHTML =
-
-data.notes.length
-
-?
-
-data.notes.map(n => `
-
-<div class="note">
-
-<div
-style="display:flex;justify-content:space-between;gap:10px">
-
-<strong>
-${escapeHTML(n.title)}
-</strong>
-
-<span class="badge">
-${escapeHTML(n.subject)}
-</span>
-
-</div>
-
-<small>
-${n.date}
-</small>
-
-<p>
-${escapeHTML(n.text)
-.replace(/\n/g,"<br>")}
-</p>
-
-<button
-class="secondary danger"
-onclick="removeNote(${n.id})">
-
-Excluir
-
-</button>
-
-</div>
-
-`).join("")
-
-:
-
-`<div class="card empty">
-Nenhuma anotação salva.
-</div>`;
-
-}
-
-
-
-function removeNote(id) {
-
-data.notes =
-data.notes.filter(n => n.id !== id);
-
-save();
-
-}
-
-
-
-function renderSubjects() {
-
-document.getElementById("subjectList").innerHTML =
-
-defaultSubjects.map(s => {
-
-const total =
-data.tasks.filter(
-t => t.subject === s.name
-).length;
-
-
-const done =
-data.tasks.filter(
-t => t.subject === s.name && t.done
-).length;
-
-
-const pct =
-total
-?
-Math.round(done / total * 100)
-:
-0;
-
-
-return `
-
-<div class="subject">
-
-<h3>
-${s.icon} ${s.name}
-</h3>
-
-<p>
-${s.desc}
-</p>
-
-<div class="progress">
-
-<div style="width:${pct}%"></div>
-
-</div>
-
-<p style="margin-top:8px">
-
-${done}/${total}
-tarefas concluídas
-
-</p>
-
-</div>
-
-`;
-
-}).join("");
-
-}
-
-
-
-function render() {
-
-const done =
-data.tasks.filter(t => t.done).length;
-
-
-const level =
-Math.floor(data.xp / 100) + 1;
-
-
-const within =
-data.xp % 100;
-
-
-document.getElementById("streak").textContent =
-data.streak;
-
-
-document.getElementById("xp").textContent =
-data.xp + " XP";
-
-
-document.getElementById("done").textContent =
-done;
-
-
-document.getElementById("minutes").textContent =
-data.minutes + " min";
-
-
-document.getElementById("level").textContent =
-"Nível " + level;
-
-
-document.getElementById("nextXP").textContent =
-(100 - within) +
-" XP para o próximo nível";
-
-
-document.getElementById("xpFill").style.width =
-within + "%";
-
-
-document.getElementById("pXP").textContent =
-data.xp;
-
-
-document.getElementById("pLevel").textContent =
-level;
-
-
-document.getElementById("pDone").textContent =
-done;
-
-
-document.getElementById("pMinutes").textContent =
-data.minutes + " min";
-
-
-const pct =
-Math.min(
-100,
-(data.minutes % 60) / 60 * 100
-);
-
-
-document.getElementById("dailyFill").style.width =
-pct + "%";
-
-
-document.getElementById("dailyText").textContent =
-(data.minutes % 60) +
-" de 60 minutos registrados nesta sessão de dados.";
-
-
-renderTasks();
-
-renderNotes();
-
-renderSubjects();
-
-}
-
-
-
-function setTimer() {
-
-resetTimer();
-
-timerSec =
-+document.getElementById("timerSelect").value * 60;
-
-updateClock();
-
-}
-
-
-
-function updateClock() {
-
-let m =
-Math.floor(timerSec / 60);
-
-let s =
-timerSec % 60;
-
-
-document.getElementById("clock").textContent =
-
-String(m).padStart(2,"0")
-+
-":"
-+
-String(s).padStart(2,"0");
-
-}
-
-
-
-function toggleTimer() {
-
-if(timerRunning) {
-
-clearInterval(timerInt);
-
-timerRunning = false;
-
-document.getElementById("startBtn").textContent =
-"▶ Continuar";
-
-return;
-
-}
-
-
-timerRunning = true;
-
-document.getElementById("startBtn").textContent =
-"⏸ Pausar";
-
-
-timerInt =
-setInterval(() => {
-
-timerSec--;
-
-updateClock();
-
-
-if(timerSec <= 0) {
-
-clearInterval(timerInt);
-
-timerRunning = false;
-
-
-data.minutes +=
-+document.getElementById("timerSelect").value;
-
-
-data.xp += 30;
-
-updateStreak();
-
-save();
-
-toast("Sessão concluída! +30 XP");
-
-setTimer();
-
-}
-
-},1000);
-
-}
-
-
-
-function resetTimer() {
-
-clearInterval(timerInt);
-
-timerRunning = false;
-
-document.getElementById("startBtn").textContent =
-"▶ Iniciar";
-
-
-timerSec =
-+document.getElementById("timerSelect").value * 60;
-
-updateClock();
-
-}
-
-
-
-function toast(msg) {
-
-const t =
-document.getElementById("toast");
-
-
-t.textContent = msg;
-
-t.style.display = "block";
-
-
-setTimeout(() => {
-
-t.style.display = "none";
-
-},1800);
-
-}
-
-
-
-function escapeHTML(s) {
-
-return s.replace(
-/[&<>"']/g,
-
-c => ({
-
-"&":"&amp;",
-
-"<":"&lt;",
-
-">":"&gt;",
-
-'"':"&quot;",
-
-"'":"&#039;"
-
-}[c])
-
-);
-
-}
-
-
-
-populateSubjects();
-
-render();
-
-updateClock();
+/* =========================
+   LIMPEZA DE TIMER
+========================= */
+
+window.addEventListener("beforeunload",()=>{
+  clearInterval(timerInterval);
+  save();
+});
 
 </script>
 
